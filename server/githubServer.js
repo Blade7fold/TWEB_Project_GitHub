@@ -1,5 +1,13 @@
 const fetch = require('node-fetch');
 
+function dictToURI(dict) {
+    var str = [];
+    for(var p in dict){
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(dict[p]));
+    }
+    return str.join("&");
+}
+
 class ResponseError extends Error {
   constructor(res, body) {
     super(`${res.status} error requesting ${res.url}: ${res.statusText}`);
@@ -20,13 +28,15 @@ class Github {
     this.token = token;
   }
 
-  request(path, opts = {}) {
-    const url = `${this.baseUrl}${path}`;
+  request(path, search_opt = {}, opts = {}) {
+    let url = `${this.baseUrl}${path}?${dictToURI(search_opt)}`;
+    
+    console.log(url)
     const options = {
       ...opts,
       headers: {
         Accept: 'application/vnd.github.v3+json',
-        Authorization: `token ${this.token}`,
+        Authorization: `token ${this.token}`
       },
     };
     console.log(url)
@@ -43,9 +53,9 @@ class Github {
   }
 
   users(since) {
-    return this.request('/users',{'since':since});
+    return this.request('/users', {'since':400,'page':1,'per_page':100});
   }
 }
-let git = new Github({token:'3ba3eb13c5717b8090c4195ac0da13eb965195fe'})
-git.users('135').then(result => console.log(result))
+let git = new Github({token:'c5462a0817b827d69f3582419dca4f7aecbbd83a'})
+git.users(400).then(result => console.log(result))
 module.exports = Github;
