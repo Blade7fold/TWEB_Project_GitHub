@@ -23,3 +23,4 @@
 hs_err_pid*
 /nbproject/private/
 /node_modules/
+/server/node_modules/
