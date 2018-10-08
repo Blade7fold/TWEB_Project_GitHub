@@ -1,22 +1,155 @@
-body {
-  background-color: rgb(255, 77, 77);
-}
-
+/* Taille de l'écran affichage html: 1537px x 692px */
 .main {
   background-color: rgb(207, 9, 207);
 
   width: 620px;
-  height: 220px;
+  height: 120px;
 
   position: absolute;
   left: 750px;
-  top: 200px;
+  top: 100px;
   transform: translateX(-50%) translateY(-50%);
 
   padding: 20px;
+
+  font-size: 42px;
+  color: red;
+  text-align: center;
 }
 
-.description {
+.gif {
+  width: 1000px;
+  height: 600px;
+
+  position: absolute;
+  left: 200px;
+  top: 40px;
+}
+
+/* Scroll bar elements */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* Buttons */
+.commit {
+  background-color: #131e7c;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 120px;
+  height: 30px;
+
+  position: absolute;
+  top: 200px;
+  left: 30px;
+}
+
+.patate {
+  color: rgba(19, 198, 204, 0.925);
+  
+  font-size: 50px;
+  position: absolute;
+  top: 522px;
+  /* left: 500px; */
+}
+
+.git_race {
+  background-color: rgb(49, 255, 30);
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 120px;
+  height: 30px;
+
+  position: absolute;
+  top: 200px;
+  left: 500px;
+}
+
+.potato {
+  color: rgba(19, 198, 204, 0.925);
+  
+  font-size: 50px;
+  position: absolute;
+  top: 1522px;
+  /* left: 500px; */
+}
+
+.twinder {
+  background-color: #df0606;
+  color: darkorange;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 120px;
+  height: 30px;
+
+  position: absolute;
+  top: 200px;
+  left: 1000px;
+}
+
+.patata {
+  color: rgba(19, 198, 204, 0.925);
+  
+  font-size: 50px;
+  position: absolute;
+  top: 3022px;
+  /* left: 500px; */
+}
+
+.back {
+  background-color: purple;
+  color: red;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 120px;
+  height: 30px;
+
+  position: absolute;
+  top: 200px;
+  right: 10px;
+}
+
+.add-button:hover {
+  font-size: 25px;
+  width: 120px;
+  height: 40px;
+}
+
+/* .description {
   position: absolute;
   left: 30%;
   top: 5%;
@@ -49,27 +182,4 @@ body {
 
 .details {
   color: rgb(12, 207, 6);
-}
-
-.add-button {
-  background-color: #131e7c;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-
-  border: 0;
-
-  font-size: 20px;
-  width: 100px;
-  height: 30px;
-
-  position: absolute;
-  top: 200px;
-  left: 30px;
-}
-
-.add-button:hover {
-  font-size: 25px;
-  width: 120px;
-  height: 40px;
-}
+} */
