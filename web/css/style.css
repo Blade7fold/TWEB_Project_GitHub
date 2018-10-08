@@ -23,7 +23,108 @@
 
   position: absolute;
   left: 200px;
-  top: 40px;
+  top: 300px;
+}
+
+/* Boutons pour accéder aux différents services de la page */
+.commit_btn {
+  background:url(.images/funny_commits.png);
+  background-size: 100%;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 200px;
+  height: 200px;
+
+  position: absolute;
+  top: 200px;
+  left: 200px;
+}
+
+.git_race_btn {
+  background:url(.images/race_monstre.png);
+  background-size: 100%;
+  color: red;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 200px;
+  height: 120px;
+
+  position: absolute;
+  top: 200px;
+  left: 700px;
+}
+
+.twinder_btn {
+  background:url(.images/follow_not_follow.png);
+  background-size: 100%;
+  color: darkorange;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 200px;
+  height: 200px;
+
+  position: absolute;
+  top: 200px;
+  left: 1200px;
+}
+
+/* Titre de chaque service de la page */
+.patate {
+  font-size: 50px;
+  color: rgba(27, 253, 7, 0.925);
+  text-align: center;
+  
+  position: relative;
+  top: 692px;
+}
+
+.potato {
+  font-size: 50px;
+  color: rgba(27, 253, 7, 0.925);
+  text-align: center;
+  
+  position: relative;
+  top: 1522px;
+}
+
+.patata {
+  font-size: 50px;
+  color: rgba(27, 253, 7, 0.925);
+  text-align: center;
+  
+  position: relative;
+  top: 3022px;
+}
+
+/* Bouton pour retourner tout en haut de la page */
+.back_btn {
+  background-color: purple;
+  color: red;
+  font-weight: 600;
+  cursor: pointer;
+
+  border: 0;
+
+  font-size: 20px;
+  width: 180px;
+  height: 30px;
+
+  position: absolute;
+  top: 200px;
+  left: 10px;
 }
 
 /* Scroll bar elements */
@@ -47,107 +148,12 @@
   background: #555; 
 }
 
-/* Buttons */
-.commit {
-  background-color: #131e7c;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-
-  border: 0;
-
-  font-size: 20px;
-  width: 120px;
-  height: 30px;
-
-  position: absolute;
-  top: 200px;
-  left: 30px;
-}
-
-.patate {
-  color: rgba(19, 198, 204, 0.925);
-  
-  font-size: 50px;
-  position: absolute;
-  top: 522px;
-  /* left: 500px; */
-}
-
-.git_race {
-  background-color: rgb(49, 255, 30);
-  color: black;
-  font-weight: 600;
-  cursor: pointer;
-
-  border: 0;
-
-  font-size: 20px;
-  width: 120px;
-  height: 30px;
-
-  position: absolute;
-  top: 200px;
-  left: 500px;
-}
-
-.potato {
-  color: rgba(19, 198, 204, 0.925);
-  
-  font-size: 50px;
-  position: absolute;
-  top: 1522px;
-  /* left: 500px; */
-}
-
-.twinder {
-  background-color: #df0606;
-  color: darkorange;
-  font-weight: 600;
-  cursor: pointer;
-
-  border: 0;
-
-  font-size: 20px;
-  width: 120px;
-  height: 30px;
-
-  position: absolute;
-  top: 200px;
-  left: 1000px;
-}
-
-.patata {
-  color: rgba(19, 198, 204, 0.925);
-  
-  font-size: 50px;
-  position: absolute;
-  top: 3022px;
-  /* left: 500px; */
-}
-
-.back {
-  background-color: purple;
-  color: red;
-  font-weight: 600;
-  cursor: pointer;
-
-  border: 0;
-
-  font-size: 20px;
-  width: 120px;
-  height: 30px;
-
-  position: absolute;
-  top: 200px;
-  right: 10px;
-}
-
-.add-button:hover {
+/* Agrandit le bouton si on met le pointeur la souris dessus */
+/* .commit:hover {
   font-size: 25px;
   width: 120px;
   height: 40px;
-}
+} */
 
 /* .description {
   position: absolute;

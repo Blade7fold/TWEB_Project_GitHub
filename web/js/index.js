@@ -1,4 +1,4 @@
-buttonArray = ['.commit', '.git_race', '.twinder', '.back']
+buttonArray = ['.commit_btn', '.git_race_btn', '.twinder_btn', '.back_btn']
 
 for(let i = 0; i < buttonArray.length; i++) {
   $(document).ready(function() {
