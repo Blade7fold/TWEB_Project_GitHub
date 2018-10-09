@@ -1,4 +1,5 @@
 /* Taille de l'écran affichage html: 1537px x 692px */
+/* 1em  = 12pt en tant que taille du texte */
 .main {
   background-color: rgb(207, 9, 207);
 
@@ -12,7 +13,7 @@
 
   padding: 20px;
 
-  font-size: 42px;
+  font-size: 2.5em;
   color: red;
   text-align: center;
 }
@@ -36,7 +37,7 @@
 
   border: 0;
 
-  font-size: 20px;
+  font-size: 2em;
   width: 200px;
   height: 200px;
 
@@ -48,13 +49,13 @@
 .git_race_btn {
   background:url(.images/race_monstre.png);
   background-size: 100%;
-  color: red;
   font-weight: 600;
   cursor: pointer;
 
   border: 0;
 
-  font-size: 20px;
+  color: red;
+  font-size: 2em;
   width: 200px;
   height: 120px;
 
@@ -72,7 +73,7 @@
 
   border: 0;
 
-  font-size: 20px;
+  font-size: 2em;
   width: 200px;
   height: 200px;
 
@@ -83,7 +84,7 @@
 
 /* Titre de chaque service de la page */
 .patate {
-  font-size: 50px;
+  font-size: 3em;
   color: rgba(27, 253, 7, 0.925);
   text-align: center;
   
@@ -92,7 +93,7 @@
 }
 
 .potato {
-  font-size: 50px;
+  font-size: 3em;
   color: rgba(27, 253, 7, 0.925);
   text-align: center;
   
@@ -101,7 +102,7 @@
 }
 
 .patata {
-  font-size: 50px;
+  font-size: 3em;
   color: rgba(27, 253, 7, 0.925);
   text-align: center;
   
@@ -118,7 +119,7 @@
 
   border: 0;
 
-  font-size: 20px;
+  font-size: 0.45em;
   width: 180px;
   height: 30px;
 
