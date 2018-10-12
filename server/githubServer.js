@@ -58,7 +58,25 @@ class Github {
   }
 
   users(since) {
-    return this.request('/users', {'since':since,'page':1,'per_page':100});
+    return this.request('/users', {'since':since,'page':1,'per_page':3});
+  }
+
+  userInfo(since, info = ['login']) {
+    return this.users(since).then((function(infos_users) {
+      let infos = [];
+      for (let i = 0; i < infos_users.length; i++) {
+        let user_info = {}
+        for (let j = 0; j < info.length; j++) {
+          user_info[info[j]] = infos_users[i][info[j]]
+        }
+        infos.push(user_info)
+      }
+      return infos
+    }).bind(this))
+  }
+
+  usernames(since) {
+    return this.userInfo(since)
   }
 
   followers(since) {
@@ -89,17 +107,20 @@ class Github {
   nbRepositoriesOf(user) {
     return this.repositoriesOf(user)
       .then(repos => {
+        if (repos == '') {
+          return 0
+        }
         return repos['total_count']
       })
   }
 
   repositoriesOf(user) {
-    return this.request('/search/repositories', {'q':dictToSearchOption({'user':user, 'fork': 'true'})})
+    return this.request('/search/repositories', {'q':dictToSearchOption({'user':user, 'fork': 'true'})}).catch(err => {console.log(err); return ''})
   }
 
   commitsOf(user, page = 1, commit_msg = []) {
 
-    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':dictToSearchOption({'author':user})})
+    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err); return ''})
       .then(commits => {
         if (commits) {
           for (let i = 0; i < commits['items'].length; i++) {
@@ -112,7 +133,7 @@ class Github {
   }
 
   nbCommitsOf(user) {
-    this.request('/search/commits', {'q':dictToSearchOption({'author':user})})
+    this.request('/search/commits', {'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err); return {'total_count': 0}})
       .then(commits => {
         return commits['total_count']
       })
@@ -145,6 +166,29 @@ class Github {
           })
       })
   }
+
+  stats(since) {
+    return this.userInfo(since, ['login', 'avatar_url'])
+      .then(name_and_avatar => {
+        let statistics = []
+        for (let i = 0; i < name_and_avatar.length; i++) {
+          let name = name_and_avatar[i]['login']
+          let avatar = name_and_avatar[i]['avatar_url']
+          Promise.all([this.linesOf(name), this.nbCommitsOf(name), this.nbRepositoriesOf(name)])
+          .then(result => {
+            console.log(result)
+            statistics.push({'username': name,
+                      'avatar_url': avatar,
+                      'nb_lines': result[0],
+                      'nb_commit': result[1],
+                      'nb_repos': result[2]
+            })
+          
+          })
+        }
+        return statistics
+      })
+  }
 }
 //let git = new Github(token = '9c5550ab04f6316be44a195761a69b475753ec1a')
 //git.followers(203).then(result => console.log(result))
@@ -152,4 +196,5 @@ class Github {
 //git.nbCommitsOf('jimmyVerdasca').then(result => console.log(result))
 //git.linesOf('AurelieLevy').then(result => console.log(result))
 //git.commitsOf('jimmyVerdasca').then(result => console.log(result))
+//git.usernames(200).then(result => console.log(result))
 module.exports = Github;
