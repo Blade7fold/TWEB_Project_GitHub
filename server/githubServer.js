@@ -115,12 +115,12 @@ class Github {
   }
 
   repositoriesOf(user) {
-    return this.request('/search/repositories', {'q':dictToSearchOption({'user':user, 'fork': 'true'})}).catch(err => {console.log(err); return ''})
+    return this.request('/search/repositories', {'q':dictToSearchOption({'user':user, 'fork': 'true'})})
   }
 
   commitsOf(user, page = 1, commit_msg = []) {
 
-    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err); return ''})
+    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err + 'plop'); return ''})
       .then(commits => {
         if (commits) {
           for (let i = 0; i < commits['items'].length; i++) {
@@ -133,7 +133,7 @@ class Github {
   }
 
   nbCommitsOf(user) {
-    this.request('/search/commits', {'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err); return {'total_count': 0}})
+    return this.request('/search/commits', {'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err + 'plop'); return {'total_count': 0}})
       .then(commits => {
         return commits['total_count']
       })
@@ -142,11 +142,16 @@ class Github {
   linesOf(user) {
     return this.repositoriesOf(user)
       .then(repos_data => {
-        let nb_repos =repos_data['total_count']
+        let per_page = 30
+        let nb_repos = repos_data['total_count']
         let repos = repos_data['items']
         let names_repos = []
-        for (let i = 0; i < nb_repos; i++) {
-          names_repos.push(this.request(`/repos/${repos[i]['full_name']}/stats/contributors`))
+        if(repos != []) {
+          for (let i = 0; i < nb_repos; i++) {
+            let page = Math.ceil((i  + 1) / per_page)
+            let index_on_page = i - (page - 1) * per_page
+            names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page}))
+          }
         }
         return Promise.all(names_repos)
           .then(contributions_data => {
@@ -163,7 +168,7 @@ class Github {
               }
             }
             return nb_lines
-          })
+          }).catch(err => console.log(err))
       })
   }
 
@@ -174,20 +179,20 @@ class Github {
         for (let i = 0; i < name_and_avatar.length; i++) {
           let name = name_and_avatar[i]['login']
           let avatar = name_and_avatar[i]['avatar_url']
-          Promise.all([this.linesOf(name), this.nbCommitsOf(name), this.nbRepositoriesOf(name)])
+          statistics.push(Promise.all([this.linesOf(name), this.nbCommitsOf(name), this.nbRepositoriesOf(name)])
           .then(result => {
-            console.log(result)
-            statistics.push({'username': name,
+            return {'username': name,
                       'avatar_url': avatar,
                       'nb_lines': result[0],
                       'nb_commit': result[1],
                       'nb_repos': result[2]
-            })
+                    }
           
-          })
+          }))
         }
-        return statistics
-      })
+        return Promise.all(statistics).then(result => {return result})
+      }
+    )
   }
 }
 //let git = new Github(token = '9c5550ab04f6316be44a195761a69b475753ec1a')

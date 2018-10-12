@@ -7,7 +7,7 @@ require('dotenv').config();
 let git = new github(process.env.TOKEN)
 
 //git.usernames(200).then(result => console.log(result))
-git.stats(200).then(result => console.log(result))
+//git.stats(200).then(result => console.log(result))
 
 http.createServer(function (req, res) {
     let q = url.parse(req.url, true)
