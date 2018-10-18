@@ -134,24 +134,24 @@
 
 /* Scroll bar elements */
 /* width */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 10px;
-}
+} */
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: #f1f1f1; 
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #888; 
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #555; 
-}
+} */
 
 /* Agrandit le bouton si on met le pointeur la souris dessus */
 /* .commit:hover {
@@ -198,7 +198,7 @@
  * # grid
  *
  * ------------------------------------------------------------------- */
- .row {
+ /* .row {
   width: 94%;
   max-width: 1200px;
   margin: 0 auto;
@@ -215,24 +215,24 @@
   max-width: none;
   margin-left: -20px;
   margin-right: -20px;
-}
+} */
 
 
 /* column blocks
 * -------------------------------------- */
-[class*="col-"] {
+/* [class*="col-"] {
   float: left;
   padding: 0 20px;
 }
 
 [class*="col-"]+[class*="col-"].end {
   float: right;
-}
+} */
 
 
 /* column width classes 
 * -------------------------------------- */
-.col-one {
+/* .col-one {
   width: 8.33333%;
 }
 
@@ -286,13 +286,13 @@
 .col-twelve,
 .col-full {
   width: 100%;
-}
+} */
 
 /* ===================================================================
  * # buttons
  *
  * ------------------------------------------------------------------- */
-.btn,
+/* .btn,
 button,
 input[type="submit"],
 input[type="reset"],
@@ -391,13 +391,13 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 .btn--stroke:hover, button.btn--stroke:hover {
   border: 0.2rem solid #000000;
   color: #000000;
-}
+} */
 
 /* ===================================================================
  * # footer
  *
  * ------------------------------------------------------------------- */
- footer {
+ /* footer {
   padding: 9rem 0 6rem;
   font-family: "montserrat-light", sans-serif;
   font-size: 15px;
@@ -424,12 +424,12 @@ footer a:hover, footer a:focus, footer a:active {
 
 footer .row {
   max-width: 980px;
-}
+} */
 
 /* --------------------------------------------------------------- 
 * ## footer main
 * --------------------------------------------------------------- */
-.footer-main {
+/* .footer-main {
   text-align: left;
 }
 
@@ -489,12 +489,12 @@ footer .row {
 
 .footer-subscribe #mc-form input[type="email"]:-moz-placeholder {
   color: rgba(255, 255, 255, 0.2);
-  /* Firefox 18- */
+  /* Firefox 18
 }
 
 .footer-subscribe #mc-form input[type="email"]::-moz-placeholder {
   color: rgba(255, 255, 255, 0.2);
-  /* Firefox 19+ */
+  /* Firefox 19+
 }
 
 .footer-subscribe #mc-form input[type="email"]:-ms-input-placeholder {
@@ -524,13 +524,13 @@ footer .row {
 
 .footer-subscribe #mc-form label i {
   padding-right: 6px;
-}
+} */
 
 
 /* ---------------------------------------------------------------
 * ## footer bottom
 * --------------------------------------------------------------- */
-.footer-bottom {
+/* .footer-bottom {
   margin-top: 5.4rem;
   text-align: center;
   font-size: 14px;
@@ -549,13 +549,13 @@ footer .row {
 
 .footer-bottom .copyright span:last-child::after {
   display: none;
-}
+} */
 
 
 /* ------------------------------------------------------------------- 
 * ## go to top
 * ------------------------------------------------------------------- */
-.go-top {
+/* .go-top {
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -586,14 +586,14 @@ footer .row {
 
 .go-top a:hover, .go-top a:focus {
   color: #FFFFFF;
-}
+} */
 
 
 /* ------------------------------------------------------------------- 
 * responsive:
 * footer
 * ------------------------------------------------------------------- */
-@media only screen and (max-width: 900px) {
+/* @media only screen and (max-width: 900px) {
   .footer-main .left {
       padding-right: 20px;
   }
@@ -663,21 +663,21 @@ footer .row {
   .footer-main .right {
       padding-left: 0;
   }
-}
+} */
 
 /* ===================================================================
  * # MISC
  *
  * ------------------------------------------------------------------- */
- .group:after {
+ /* .group:after {
   content: "";
   display: table;
   clear: both;
-}
+} */
 
 /* Misc Helper Styles
 * -------------------------------------- */
-.is-hidden {
+/* .is-hidden {
   display: none;
 }
 
@@ -738,4 +738,4 @@ footer .row {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-}
+} */
