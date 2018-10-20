@@ -1,22 +1,10 @@
 const fetch = require('node-fetch');
+var utils = require('./utils')
+let util = new utils()
 
-function dictToFormattedString(dict, key_value_sep = '=', separator = '&') {
-  var str = [];
-  for(var p in dict){
-      str.push(p + key_value_sep + dict[p]);
-  }
-  
-  return str.join(separator);
-}
-
-function dictToURI(dict) {
-  return dictToFormattedString(dict)
-}
-
-function dictToSearchOption(dict) {
-  return dictToFormattedString(dict, ':', '+')
-}
-
+/**
+ * response class sent when a fetch fail
+ */
 class ResponseError extends Error {
   constructor(res, body) {
     super(`${res.status} error requesting ${res.url}: ${res.statusText}`);
@@ -26,18 +14,23 @@ class ResponseError extends Error {
   }
 }
 
+/**
+ * class managing the connexion to the github API.
+ */
 class Github {
   constructor(token, baseUrl = 'https://api.github.com') {
     this.token = token;
     this.baseUrl = baseUrl;
   }
 
-  setToken(token) {
-    this.token = token;
-  }
-
+  /**
+   * method sending a request to the given path url. and return the body datas.
+   * @param {url of the request} path 
+   * @param {dictionary used by github to navigate through big data answers} search_opt 
+   * @param {dictionnary to add specific headers to the request} opts 
+   */
   request(path, search_opt = {}, opts = {}) {
-    let url = `${this.baseUrl}${path}?${dictToURI(search_opt)}`;
+    let url = `${this.baseUrl}${path}?${util.dictToFormattedString(search_opt)}`;
     const options = {
       ...opts,
       headers: {
@@ -57,10 +50,22 @@ class Github {
         }));
   }
 
+  /**
+   * method sending a request to get the users informations from github
+   * @param {seed of the first user we want} since 
+   */
   users(since) {
     return this.request('/users', {'since':since,'page':1,'per_page':3});
   }
 
+  //TODO écrire un test pour quand on donne pas les bonnes meta données
+  /**
+   * method sending a request to get the users informations from github
+   * and formatting them to keep only the specified meta informations
+   * in the info dictionnary.
+   * @param {seed of the first user we want} since 
+   * @param {list of the meta informations we want to keep} info 
+   */
   userInfo(since, info = ['login']) {
     return this.users(since).then((function(infos_users) {
       let infos = [];
@@ -75,10 +80,13 @@ class Github {
     }).bind(this))
   }
 
-  usernames(since) {
-    return this.userInfo(since)
-  }
-
+  /**
+   * method sending a request to get the users informations and keeping only:
+   * the username
+   * the avatar
+   * the number of followers
+   * @param {seed of the first user we want} since 
+   */
   followers(since) {
     return this.users(since).then((function(infos_users) {
       let cleaned_infos_users = [];
@@ -104,6 +112,10 @@ class Github {
     
   }
 
+  /**
+   * request to github the number of repositories of a given user
+   * @param {username of the user we want the number of repositories} user 
+   */
   nbRepositoriesOf(user) {
     return this.repositoriesOf(user)
       .then(repos => {
@@ -114,13 +126,22 @@ class Github {
       })
   }
 
+  /**
+   * request to github the repositories of a given user (fork are considered aswell)
+   * @param {username of the user we want the repositories} user 
+   */
   repositoriesOf(user) {
-    return this.request('/search/repositories', {'q':dictToSearchOption({'user':user, 'fork': 'true'})})
+    return this.request('/search/repositories', {'q':util.dictToSearchOption({'user':user, 'fork': 'true'})})
   }
 
+  /**
+   * Use a recursive strategy to request the all the commits message of a given user.
+   * @param {username of the user we want the commits} user 
+   * @param {number of the page the where the recursive call is} page 
+   * @param {list of the commits message currently found} commit_msg 
+   */
   commitsOf(user, page = 1, commit_msg = []) {
-
-    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err + 'plop'); return ''})
+    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':util.dictToSearchOption({'author':user})}).catch(err => {console.log(err); return ''})
       .then(commits => {
         if (commits) {
           for (let i = 0; i < commits['items'].length; i++) {
@@ -132,13 +153,21 @@ class Github {
       }, error => {return commit_msg})
   }
 
+  /**
+   * request to github to get the number of commits of a given user
+   * @param {username of the user we want the number of commits} user 
+   */
   nbCommitsOf(user) {
-    return this.request('/search/commits', {'q':dictToSearchOption({'author':user})}).catch(err => {console.log(err + 'plop'); return {'total_count': 0}})
+    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})}).catch(err => {console.log(err); return {'total_count': 0}})
       .then(commits => {
         return commits['total_count']
       })
   }
 
+  /**
+   * request to github the lines code of a user and calculate their total number to return it.
+   * @param {username of the user we want the number of line code} user 
+   */
   linesOf(user) {
     return this.repositoriesOf(user)
       .then(repos_data => {
@@ -172,6 +201,16 @@ class Github {
       })
   }
 
+  /**
+   * request to github multiple statistics and information of several users.
+   * the kept informations are :
+   * the username
+   * the avatar
+   * the number of code lines
+   * the number of commit
+   * the number of repositories
+   * @param {seed of the first user we want the statistics} since 
+   */
   stats(since) {
     return this.userInfo(since, ['login', 'avatar_url'])
       .then(name_and_avatar => {
@@ -182,10 +221,10 @@ class Github {
           statistics.push(Promise.all([this.linesOf(name), this.nbCommitsOf(name), this.nbRepositoriesOf(name)])
           .then(result => {
             return {'username': name,
-                      'avatar_url': avatar,
-                      'nb_lines': result[0],
-                      'nb_commit': result[1],
-                      'nb_repos': result[2]
+                    'avatar_url': avatar,
+                    'nb_lines': result[0],
+                    'nb_commit': result[1],
+                    'nb_repos': result[2]
                     }
           
           }))
@@ -195,11 +234,5 @@ class Github {
     )
   }
 }
-//let git = new Github(token = '9c5550ab04f6316be44a195761a69b475753ec1a')
-//git.followers(203).then(result => console.log(result))
-//git.repositoriesOf('Blade7fold').then(result => console.log(result))
-//git.nbCommitsOf('jimmyVerdasca').then(result => console.log(result))
-//git.linesOf('AurelieLevy').then(result => console.log(result))
-//git.commitsOf('jimmyVerdasca').then(result => console.log(result))
-//git.usernames(200).then(result => console.log(result))
+
 module.exports = Github;
