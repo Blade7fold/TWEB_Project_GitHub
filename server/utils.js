@@ -10,7 +10,7 @@ class Utils {
     }
     
     dictToSearchOption(dict) {
-        return dictToFormattedString(dict, ':', '+')
+        return this.dictToFormattedString(dict, ':', '+')
     }
 }
 module.exports = Utils;
