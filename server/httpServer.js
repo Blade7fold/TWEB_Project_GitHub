@@ -20,8 +20,8 @@ app.get('/commit', function(req, res) {
     git.commitsOf(q.query['user'])
     .then(data => {
         try {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(data.toString())
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.json(data)
         } catch(err) {
             console.log(err)
         }
@@ -39,14 +39,8 @@ app.get('/follower', function(req, res) {
     let q = url.parse(req.url, true)
     git.followers(q.query['seed'])
     .then(data => {
-        try {
-            console.log(data)
-            res.setHeader('Content-Type', 'application/json');
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.send(JSON.stringify(data))
-        } catch(err) {
-            console.log(err)
-        }
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.json(data)
     }).catch(err => {
         console.log(err)
     })
@@ -61,11 +55,13 @@ app.get('/follower', function(req, res) {
  */
 app.get('/stat', function(req, res) {
     let q = url.parse(req.url, true)
+    console.log(req.url)
     git.stats(q.query['seed'])
     .then(data => {
+        console.log(data)
         try {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(data.toString())
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.json(data)
         } catch(err) {
             console.log(err)
         }
