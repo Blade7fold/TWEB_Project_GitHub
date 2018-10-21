@@ -6,7 +6,8 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<!-- <img class="gif" src="images/eisai.gif"> -->
 
-		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="js/index.js"></script>
 	</head>
@@ -15,7 +16,7 @@
 			SHAME OF GITHUB
 		</h1>
 		<div>
-			<p><button class="commit_btn" href="#patate" style="background-image:url('images/funny_commits.png')">
+			<p><button id="commit_button" onclick="changeFollowersInfo()" class="commit_btn" href="#patate" style="background-image:url('images/funny_commits.png')">
 				Commit
 			</button></p>
 			<p><button class="git_race_btn" href="#potato" style="background-image:url('images/race_monstre.png')">

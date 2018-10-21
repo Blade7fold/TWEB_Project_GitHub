@@ -20,6 +20,7 @@ app.get('/commit', function(req, res) {
     git.commitsOf(q.query['user'])
     .then(data => {
         try {
+            res.setHeader('Content-Type', 'application/json');
             res.send(data.toString())
         } catch(err) {
             console.log(err)
@@ -39,7 +40,10 @@ app.get('/follower', function(req, res) {
     git.followers(q.query['seed'])
     .then(data => {
         try {
-            res.send(data.toString())
+            console.log(data)
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.send(JSON.stringify(data))
         } catch(err) {
             console.log(err)
         }
@@ -60,6 +64,7 @@ app.get('/stat', function(req, res) {
     git.stats(q.query['seed'])
     .then(data => {
         try {
+            res.setHeader('Content-Type', 'application/json');
             res.send(data.toString())
         } catch(err) {
             console.log(err)

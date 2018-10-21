@@ -1,38 +1,46 @@
-
 // $WIN = $(window);
+try {
+let entryPoint = 'http://localhost:8080'
 
-function getUserFollowers() {
-  return fetch(`localhost:8080/follower?seed=1234`)
-    .then(response => {
-    if (!response.ok) throw new Error('Not found!');
-      return response.json();
-    })
-    .then(user => user.follower_url);
+function request(path, search_opt, opts = {}) {
+  let url = `${entryPoint}/${path}?seed=123`;
+
+  let options = {
+    ...opts, 
+    headers: {
+      'Accept': 'application/json'
+    }
+  }
+  alert(url)
+  return fetch(url, options)
+  .then(res => {
+    return res.json()
+    .then((data) => {
+      if (!res.ok) {
+        throw new ResponseError(res, data);
+      }
+      return data;
+    })});
 }
-// var express = require('express');
-// var app = express();
 
-buttonArray = ['.commit_btn', '.git_race_btn', '.twinder_btn', '.back_btn']
+function getUserFollowers(seed) {
+  request('follower', 'seed=' + seed)
+  .then(datas => {
+    document.getElementById("commit_button").innerHTML = JSON.stringify(datas[0]['login'])
+  })
+}
 
-for(let i = 0; i < buttonArray.length; i++) {
-  $(document).ready(function() {
-    $(buttonArray[i]).on('click', function() { // Au clic sur un bouton
-      getUserFollowers()
-        .then(follower_url => {
-          const img = document.createElement('img');
-          img.src = follower_url;
-          document.body.append(img);
-        })
-        .catch(err => {
-          const p = document.createElement('p');
-          p.innerText = 'Sorry';
-          document.body.append(p);
-      })
-      var page = $(this).attr('href'); // Endroit ciblé
-      var speed = 750; // Durée de l'animation (en ms)
-      $('html, body').animate( { scrollTop: $(page).offset().top }, speed);
-    });
-  });
+function changeFollowersInfo() {
+  getUserFollowers(1234)
+
+  var page = $(this).attr('href'); // Endroit ciblé
+  var speed = 750; // Durée de l'animation (en ms)
+  $('html, body').animate( { scrollTop: $(page).offset().top }, speed);
+}
+
+  
+} catch(err) {
+  alert(err);
 }
 
 
