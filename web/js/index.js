@@ -38,10 +38,19 @@ function getUserCommits(username) {
 }
 
 function changeCommitsInfo() {
+
+  //let username =  document.getElementById("commit_username").value
+
   getUserCommits('jimmyVerdasca').then(commits => {
-    document.getElementById("commit_button").innerHTML = commits[0]
-    document.getElementById("git_race_button").innerHTML = commits[1]
-    document.getElementById("twinder_button").innerHTML = commits[2]
+    for (let i = 0; i < Object.keys(commits).length; i++) {
+      textNode = document.getElementById("commit_text" + i)
+      if (textNode == undefined) {
+        textNode = document.createElement('p');
+        textNode.setAttribute("id", "commit_text" + i);
+        document.getElementById("patata").appendChild(textNode); 
+      }
+      textNode.innerHTML = commits[i]
+    }
   })
 }
 
