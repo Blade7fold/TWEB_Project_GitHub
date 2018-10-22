@@ -27,7 +27,7 @@ function getUserFollowers(seed) {
 
 function changeFollowersInfo() {
   getUserFollowers(1234).then(followers => {
-    document.getElementById("commit_button").innerHTML = followers[0]['login']
+    document.getElementById("userName").innerHTML = followers[0]['login']
     document.getElementById("git_race_button").innerHTML = followers[0]['avatar_url']
     document.getElementById("twinder_button").innerHTML = followers[0]['nb_followers']
   })
