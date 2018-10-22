@@ -1,0 +1,5 @@
+1. Ouvrir terminal
+2. Écrire dans le terminal http-server "C:\Users\NOM_UTILISATEUR\PATH_TO_PROJECT" -c-1
+pour lancer un serveur en local
+3. Vérifier dans quel port se lance le projet et changer dans index.js selon le port
+pour aller chercher le fichier .json pour le graphe

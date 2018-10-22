@@ -23,13 +23,19 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/vendor.css">
     <link rel="stylesheet" href="css/main.css">
+    <style> 
+        .line {
+           fill: none;
+           stroke: green;
+           stroke-width: 5px;
+        }
+     </style>
 
     <!-- script
     ================================================== -->
     <script src="js/modernizr.js"></script>
     <script src="js/pace.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="js/index.js"></script>
 
     <!-- favicons
     ================================================== -->
@@ -60,31 +66,14 @@
                 <ul class="header-nav__list">
                     <li class="current"><a class="smoothscroll"  href="#home" title="home">Home</a></li>
                     <li><a class="smoothscroll"  href="#about" title="about">About</a></li>
-                    <li><a class="smoothscroll"  href="#twinder" title="twinder">Twinder</a></li>
-                    <li><a class="smoothscroll"  href="#race" title="race">Race Them All</a></li>
-                    <li><a class="smoothscroll"  href="#clients" title="clients">Commits</a></li>
+                    <li><a class="smoothscroll"  href="#twinder" title="twinder" onclick="changeFollowersInfo()">Twinder</a></li>
+                    <li><a class="smoothscroll"  href="#race" title="race" onclick="graphCreation()">Race Them All</a></li>
+                    <li><a class="smoothscroll"  href="#commits" title="commits">Commits</a></li>
+                    <li><a class="smoothscroll"  href="#clients" title="clients">Employees</a></li>
                     <li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>
                 </ul>
     
                 <p>Do you wanna check the <b style="font-style: bold">shame</b> of GitHub? This is your page. Use it carefully.</p>
-    
-                <!-- <ul class="header-nav__social">
-                    <li>
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-behance"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-dribbble"></i></a>
-                    </li>
-                </ul> -->
 
             </div> <!-- end header-nav__content -->
 
@@ -120,15 +109,16 @@
                         style="background-image: url('images/twinder.png'); margin-left: 50px">
                         Twinder
                     </a>
-                    <a href="#race" class="smoothscroll btn btn--stroke"
+                    <a href="#race" class="smoothscroll btn btn--stroke" onclick="graphCreation()"
                         style="background-image: url('images/race_them_all.png'); width: 240px; height: 140px;">
                         Race Them All
                     </a>
-                    <a href="#clients" class="smoothscroll btn btn--stroke" style="background-image: url('images/funny_commits.png')">
+                    <a href="#commits" class="smoothscroll btn btn--stroke" style="background-image: url('images/funny_commits.png')">
                         Commits
                     </a>
                     <a>
-                        Seed: <input type="number" min="1" max="31000000" value="1" style="background-color: white; margin-left: 525px">
+                        Choose your Seed: <input type="number" min="1" max="31000000" value="1"
+                                style="margin-left: 550px">
                     </a>
                     
                 </div>
@@ -144,26 +134,6 @@
             <div class="home-content__line"></div>
 
         </div> <!-- end home-content -->
-
-
-        <!-- <ul class="home-social">
-            <li>
-                <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i><span>Facebook</span></a>
-            </li>
-            <li>
-                <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i><span>Twiiter</span></a>
-            </li>
-            <li>
-                <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i><span>Instagram</span></a>
-            </li>
-            <li>
-                <a href="#0"><i class="fa fa-behance" aria-hidden="true"></i><span>Behance</span></a>
-            </li>
-            <li>
-                <a href="#0"><i class="fa fa-dribbble" aria-hidden="true"></i><span>Dribbble</span></a>
-            </li>
-        </ul>  -->
-        <!-- end home-social -->
 
     </section> <!-- end s-home -->
 
@@ -244,12 +214,12 @@
                          style="background-image: url('images/follow.jpg'); margin-left: 50rem; height: 15rem"></a>
                     </div>
     
-                    <div class="masonry__brick">
+                    <div class="masonry__brick" style="margin-bottom: 100px">
                         <div class="item-folio">
                             <!-- Changer l'href et src des images par celui de l'image de l'utilisateur de GitHub
                                 Changer title avec le nom de l'utilisateur -->
                             <div class="item-folio__thumb">
-                                <a href="images/user.jpg" class="thumb-link" title="Username" data-size="1050x700">
+                                <a href="images/user.jpg" class="thumb-link" data-size="1050x700">
                                     <img src="images/user.jpg">
                                 </a>
                             </div>
@@ -274,165 +244,19 @@
     
                         </div>
                     </div> <!-- end masonry__brick -->
-
-                    <!-- <div class="masonry__brick" data-aos="fade-up">
-                        <div class="item-folio">
-                                
-                            <div class="item-folio__thumb">
-                                <a href="images/portfolio/gallery/g-woodcraft.jpg" class="thumb-link" title="Woodcraft" data-size="1050x700">
-                                    <img src="images/portfolio/woodcraft.jpg" 
-                                         srcset="images/portfolio/woodcraft.jpg 1x, images/portfolio/woodcraft@2x.jpg 2x" alt="">
-                                </a>
-                            </div>
-    
-                            <div class="item-folio__text">
-                                <h3 class="item-folio__title">
-                                    Woodcraft
-                                </h3>
-                                <p class="item-folio__cat">
-                                    Web Design
-                                </p>
-                            </div>
-    
-                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Project link">
-                                <i class="icon-link"></i>
-                            </a>
-    
-                            <div class="item-folio__caption">
-                                <p>Vero molestiae sed aut natus excepturi. Et tempora numquam. Temporibus iusto quo.Unde dolorem corrupti neque nisi.</p>
-                            </div>
-    
-                        </div>
-                    </div> end masonry__brick -->
-    
-                    <!-- <div class="masonry__brick" data-aos="fade-up">
-                        <div class="item-folio">
-                                
-                            <div class="item-folio__thumb">
-                                <a href="images/portfolio/gallery/g-beetle.jpg" class="thumb-link" title="The Beetle Car" data-size="1050x700">
-                                    <img src="images/portfolio/the-beetle.jpg"
-                                         srcset="images/portfolio/the-beetle.jpg 1x, images/portfolio/the-beetle@2x.jpg 2x" alt="">
-                                </a>
-                            </div>
-    
-                            <div class="item-folio__text">
-                                <h3 class="item-folio__title">
-                                    The Beetle
-                                </h3>
-                                <p class="item-folio__cat">
-                                    Web Development
-                                </p>
-                            </div>
-    
-                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Project link">
-                                <i class="icon-link"></i>
-                            </a>
-    
-                            <div class="item-folio__caption">
-                                <p>Vero molestiae sed aut natus excepturi. Et tempora numquam. Temporibus iusto quo.Unde dolorem corrupti neque nisi.</p>
-                            </div>
-    
-                        </div>
-                    </div> end masonry__brick -->
-    
-                    <!-- <div class="masonry__brick" data-aos="fade-up">
-                        <div class="item-folio">
-                                
-                            <div class="item-folio__thumb">
-                                <a href="images/portfolio/gallery/g-grow-green.jpg" class="thumb-link" title="Grow Green" data-size="1050x700">
-                                    <img src="images/portfolio/grow-green.jpg" 
-                                         srcset="images/portfolio/grow-green.jpg 1x, images/portfolio/grow-green@2x.jpg 2x" alt="">
-                                </a>
-                            </div>
-    
-                            <div class="item-folio__text">
-                                <h3 class="item-folio__title">
-                                    Grow Green
-                                </h3>
-                                <p class="item-folio__cat">
-                                    Branding
-                                </p>
-                            </div>
-    
-                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Project link">
-                                <i class="icon-link"></i>
-                            </a>
-    
-                            <div class="item-folio__caption">
-                                <p>Vero molestiae sed aut natus excepturi. Et tempora numquam. Temporibus iusto quo.Unde dolorem corrupti neque nisi.</p>
-                            </div>
-    
-                        </div>
-                    </div> end masonry__brick -->
-
-                    <!-- <div class="masonry__brick" data-aos="fade-up">
-                        <div class="item-folio">
-                                
-                            <div class="item-folio__thumb">
-                                <a href="images/portfolio/gallery/g-guitarist.jpg" class="thumb-link" title="Guitarist" data-size="1050x700">
-                                    <img src="images/portfolio/guitarist.jpg" 
-                                         srcset="images/portfolio/guitarist.jpg 1x, images/portfolio/guitarist@2x.jpg 2x" alt="">
-                                </a>
-                            </div>
-    
-                            <div class="item-folio__text">
-                                <h3 class="item-folio__title">
-                                    Guitarist
-                                </h3>
-                                <p class="item-folio__cat">
-                                    Web Design
-                                </p>
-                            </div>
-    
-                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Project link">
-                                <i class="icon-link"></i>
-                            </a>
-    
-                            <div class="item-folio__caption">
-                                <p>Vero molestiae sed aut natus excepturi. Et tempora numquam. Temporibus iusto quo.Unde dolorem corrupti neque nisi.</p>
-                            </div>
-    
-                        </div>
-                    </div> end masonry__brick -->
-    
-                    <!-- <div class="masonry__brick" data-aos="fade-up">
-                        <div class="item-folio">
-                                
-                            <div class="item-folio__thumb">
-                                <a href="images/portfolio/gallery/g-palmeira.jpg" class="thumb-link" title="Palmeira" data-size="1050x700">
-                                    <img src="images/portfolio/palmeira.jpg"
-                                         srcset="images/portfolio/palmeira.jpg 1x, images/portfolio/palmeira@2x.jpg 2x" alt="">
-                                </a>
-                            </div>
-    
-                            <div class="item-folio__text">
-                                <h3 class="item-folio__title">
-                                    Palmeira
-                                </h3>
-                                <p class="item-folio__cat">
-                                    Web Design
-                                </p>
-                            </div>
-    
-                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Project link">
-                                <i class="icon-link"></i>
-                            </a>
-    
-                            <div class="item-folio__caption">
-                                <p>Vero molestiae sed aut natus excepturi. Et tempora numquam. Temporibus iusto quo.Unde dolorem corrupti neque nisi.</p>
-                            </div>
-    
-                        </div>
-                    </div> end masonry__brick -->
-
                 </div> <!-- end masonry -->
+                <a style="margin-left: 480px; font: bold; color: aquamarine">
+                    Choose your Seed: <input type="number" min="1" max="31000000" value="1"
+                                        style="margin-left: 505px">
+                </a>
+
             </div> <!-- end col-full -->
         </div> <!-- end twinder-content -->
 
     </section> <!-- end s-twinder -->
 
 
-    <!-- race
+    <!-- race them all
     ================================================== -->
     <section id='race' class="s-race">
 
@@ -525,6 +349,95 @@
 
     </section> <!-- end s-race -->
 
+    <!-- commits
+    ================================================== -->
+    <section id='commits' class="s-commits">
+
+        <div class="row section-header has-bottom-sep" data-aos="fade-up">
+            <div class="col-full">
+                <h1 class="display-2" style="color: #FFFFFF">Commits</h1>
+                <h3 class="subhead">Search someone's commits to have some fun</h3>
+            </div>
+        </div> <!-- end section-header -->
+
+        <div class="row commits-list block-1-2 block-tab-full">
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-text">
+                    <h3 class="h2" style="color: #FFFFFF">Brand Identity</h3>
+                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
+                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
+                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="icon-group"></i>
+                </div>
+                <div class="service-text">
+                    <h3 class="h2" style="color: #FFFFFF">Illustration</h3>
+                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
+                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
+                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="icon-megaphone"></i>
+                </div>  
+                <div class="service-text">
+                    <h3 class="h2" style="color: #FFFFFF">Marketing</h3>
+                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
+                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
+                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="icon-earth"></i>
+                </div>
+                <div class="service-text">
+                    <h3 class="h2" style="color: #FFFFFF">Web Design</h3>
+                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
+                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
+                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="icon-cube"></i>
+                </div>
+                <div class="service-text">
+                    <h3 class="h2" style="color: #FFFFFF">Packaging Design</h3>
+                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
+                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
+                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
+                    </p>
+                </div>
+            </div>
+    
+            <div class="col-block service-item" data-aos="fade-up">
+                <div class="service-icon"><i class="icon-lego-block"></i></div>
+                <div class="service-text">
+                    <h3 class="h2" style="color: #FFFFFF">Web Development</h3>
+                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
+                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
+                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
+                    </p>
+                </div>
+            </div>
+
+        </div> <!-- end commits-list -->
+
+    </section> <!-- end s-commits -->
 
     <!-- clients
     ================================================== -->
@@ -565,10 +478,10 @@
                         Laudantium quia consequatur molestias delectus culpa facere hic dolores aperiam. Accusantium quos qui praesentium corpori.
                         Excepturi nam cupiditate culpa doloremque deleniti repellat.</p>
 
-                        <img src="images/avatars/user-01.jpg" alt="Author image" class="testimonials__avatar">
+                        <img src="images/kyoma.jpg" alt="Author image" class="testimonials__avatar">
                         <div class="testimonials__info">
-                            <span class="testimonials__name">Tim Cook</span> 
-                            <span class="testimonials__pos">CEO, Apple</span>
+                            <span class="testimonials__name">Nathan Gonzalez</span> 
+                            <span class="testimonials__pos">Boss</span>
                         </div>
 
                     </div>
@@ -578,23 +491,10 @@
                         <p>Excepturi nam cupiditate culpa doloremque deleniti repellat. Veniam quos repellat voluptas animi adipisci.
                         Nisi eaque consequatur. Quasi voluptas eius distinctio. Atque eos maxime. Qui ipsam temporibus quisquam vel.</p>
 
-                        <img src="images/avatars/user-05.jpg" alt="Author image" class="testimonials__avatar">
+                        <img src="images/user.jpg" alt="Author image" class="testimonials__avatar">
                         <div class="testimonials__info">
-                            <span class="testimonials__name">Sundar Pichai</span> 
-                            <span class="testimonials__pos">CEO, Google</span>
-                        </div>
-
-                    </div>
-
-                    <div class="testimonials__slide">
-                        
-                        <p>Repellat dignissimos libero. Qui sed at corrupti expedita voluptas odit. Nihil ea quia nesciunt. Ducimus aut sed ipsam.  
-                        Autem eaque officia cum exercitationem sunt voluptatum accusamus. Quasi voluptas eius distinctio.</p>
-
-                        <img src="images/avatars/user-02.jpg" alt="Author image" class="testimonials__avatar">
-                        <div class="testimonials__info">
-                            <span class="testimonials__name">Satya Nadella</span> 
-                            <span class="testimonials__pos">CEO, Microsoft</span>
+                            <span class="testimonials__name">Jimmy Verdasca</span> 
+                            <span class="testimonials__pos">Boss (sometimes)</span>
                         </div>
 
                     </div>
@@ -605,127 +505,7 @@
         </div> <!-- end client-testimonials -->
 
     </section> <!-- end s-clients -->
-
-
-    <!-- contact
-    ================================================== -->
-    <section id="contact" class="s-contact">
-
-        <div class="overlay"></div>
-        <div class="contact__line"></div>
-
-        <div class="row section-header" data-aos="fade-up">
-            <div class="col-full">
-                <h3 class="subhead">Contact Us</h3>
-                <h1 class="display-2 display-2--light">Reach out for a new project or just say hello</h1>
-            </div>
-        </div>
-
-        <div class="row contact-content" data-aos="fade-up">
-            
-            <div class="contact-primary">
-
-                <h3 class="h6">Send Us A Message</h3>
-
-                <form name="contactForm" id="contactForm" method="post" action="" novalidate="novalidate">
-                    <fieldset>
     
-                    <div class="form-field">
-                        <input name="contactName" type="text" id="contactName" placeholder="Your Name" value="" minlength="2" required="" aria-required="true" class="full-width">
-                    </div>
-                    <div class="form-field">
-                        <input name="contactEmail" type="email" id="contactEmail" placeholder="Your Email" value="" required="" aria-required="true" class="full-width">
-                    </div>
-                    <div class="form-field">
-                        <input name="contactSubject" type="text" id="contactSubject" placeholder="Subject" value="" class="full-width">
-                    </div>
-                    <div class="form-field">
-                        <textarea name="contactMessage" id="contactMessage" placeholder="Your Message" rows="10" cols="50" required="" aria-required="true" class="full-width"></textarea>
-                    </div>
-                    <div class="form-field">
-                        <button class="full-width btn--primary">Submit</button>
-                        <div class="submit-loader">
-                            <div class="text-loader">Sending...</div>
-                            <div class="s-loader">
-                                <div class="bounce1"></div>
-                                <div class="bounce2"></div>
-                                <div class="bounce3"></div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    </fieldset>
-                </form>
-
-                <!-- contact-warning -->
-                <div class="message-warning">
-                    Something went wrong. Please try again.
-                </div> 
-            
-                <!-- contact-success -->
-                <div class="message-success">
-                    Your message was sent, thank you!<br>
-                </div>
-
-            </div> <!-- end contact-primary -->
-
-            <div class="contact-secondary">
-                <div class="contact-info">
-
-                    <h3 class="h6 hide-on-fullwidth">Contact Info</h3>
-
-                    <div class="cinfo">
-                        <h5>Where to Find Us</h5>
-                        <p>
-                            1600 Amphitheatre Parkway<br>
-                            Mountain View, CA<br>
-                            94043 US
-                        </p>
-                    </div>
-
-                    <div class="cinfo">
-                        <h5>Email Us At</h5>
-                        <p>
-                            contact@glintsite.com<br>
-                            info@glintsite.com
-                        </p>
-                    </div>
-
-                    <div class="cinfo">
-                        <h5>Call Us At</h5>
-                        <p>
-                            Phone: (+63) 555 1212<br>
-                            Mobile: (+63) 555 0100<br>
-                            Fax: (+63) 555 0101
-                        </p>
-                    </div>
-
-                    <!-- <ul class="contact-social">
-                        <li>
-                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a>
-                        </li>
-                    </ul>end contact-social -->
-
-                </div> <!-- end contact-info -->
-            </div> <!-- end contact-secondary -->
-
-        </div> <!-- end contact-content -->
-
-    </section> <!-- end s-contact -->
-
-
     <!-- footer
     ================================================== -->
     <footer>
@@ -834,6 +614,7 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/index.js"></script>
 
 </body>
 

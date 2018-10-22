@@ -126,7 +126,7 @@
                 }
 
                 if ($caption.length > 0) {
-                    item.title = $.trim($titleText + $captionText);
+                    item.title = $.trim($captionText);
                 }
 
                 items.push(item);

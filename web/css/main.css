@@ -39,6 +39,8 @@
  *      ## about stats
  *  # race
  *      ## race list
+ *  # commits
+ *      ## commits list
  *  # twinder
  *      ## bricks/masonry
  *  # clients
@@ -621,12 +623,14 @@ select {
     padding: 1.5rem 0;
     border: 0;
     outline: none;
-    color: #333333;
+    color: #242424;
+    font-weight: bold;
     font-family: "montserrat-light", sans-serif;
     font-size: 1.4rem;
     line-height: 3rem;
+    width: 100px;
     max-width: 100%;
-    background: transparent;
+    background: rgba(192, 192, 192, 0.856);
     border-bottom: 2px solid rgba(0, 0, 0, 0.15);
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
@@ -2464,6 +2468,128 @@ html.no-csstransitions .home-content__main {
         padding-left: 0;
     }
     .race-list h3 {
+        font-size: 2.5rem;
+    }
+}
+
+/* ===================================================================
+ * # commits
+ *
+ * ------------------------------------------------------------------- */
+ .s-commits {
+    padding-top: 16.2rem;
+    padding-bottom: 13.2rem;
+    background-color: rgb(0, 0, 0);
+    color: #757575;
+    position: relative;
+}
+
+
+/* ------------------------------------------------------------------- 
+ * ## commits list
+ * ------------------------------------------------------------------- */
+.commits-list {
+    margin-top: 6rem;
+}
+
+.commits-list .service-item {
+    margin-bottom: .9rem;
+}
+
+.commits-list .service-item h3 {
+    margin-top: 0;
+}
+
+.commits-list .service-item:nth-child(2n+1) {
+    padding-right: 50px;
+}
+
+.commits-list .service-item:nth-child(2n+2) {
+    padding-left: 50px;
+}
+
+.commits-list .service-text {
+    margin-left: 7.8rem;
+}
+
+.commits-list .service-icon {
+    float: left;
+    color: #39b54a;
+    font-size: 4.8rem;
+    margin-top: -.6rem;
+}
+
+
+/* ------------------------------------------------------------------- 
+ * responsive:
+ * commits
+ * ------------------------------------------------------------------- */
+@media only screen and (max-width: 1200px) {
+    .commits-list {
+        max-width: 1000px;
+    }
+    .commits-list .service-item:nth-child(2n+1) {
+        padding-right: 30px;
+    }
+    .commits-list .service-item:nth-child(2n+2) {
+        padding-left: 30px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .commits-list h3 {
+        font-size: 2.5rem;
+    }
+    .commits-list .service-item:nth-child(2n+1) {
+        padding-right: 20px;
+    }
+    .commits-list .service-item:nth-child(2n+2) {
+        padding-left: 20px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .commits-list {
+        margin-top: 4.2rem;
+        max-width: 500px;
+        text-align: center;
+    }
+    .commits-list .service-item:nth-child(n) {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    .commits-list h3 {
+        font-size: 3rem;
+    }
+    .commits-list .service-text {
+        margin-left: 0;
+    }
+    .commits-list .service-icon {
+        font-size: 4.5rem;
+        float: none;
+        margin-top: 0;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .s-commits {
+        padding-top: 12rem;
+    }
+    .commits-list .service-item:nth-child(n) {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .commits-list h3 {
+        font-size: 2.5rem;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .commits-list .service-item:nth-child(n) {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .commits-list h3 {
         font-size: 2.5rem;
     }
 }
