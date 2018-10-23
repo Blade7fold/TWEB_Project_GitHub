@@ -63,7 +63,8 @@ app.get('/stat', function(req, res) {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.json(data)
         } catch(err) {
-            console.log(err)
+            // alert("FUCK DANNY");
+            console.log("FUCK DANNY ET JIMMYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYyyy" + err)
         }
     })
 });

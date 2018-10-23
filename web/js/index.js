@@ -62,78 +62,164 @@ function getUserStats(seed) {
 
 function changeStatsInfo() {
   getUserStats(123).then(stats => {
-    document.getElementById("commit_button").innerHTML = stats[0]['username']
-    document.getElementById("git_race_button").innerHTML = stats[0]['avatar_url']
-    document.getElementById("commit_button").innerHTML = stats[0]['nb_lines']
-    document.getElementById("git_race_button").innerHTML = stats[0]['nb_commit']
-    document.getElementById("twinder_button").innerHTML = stats[0]['nb_repos']
-  })
-}
+    console.log(stats)
+    // document.getElementById("service1").innerHTML = stats[0]['username']
+    // document.getElementById("service2").innerHTML = stats[0]['avatar_url']
+    // document.getElementById("service3").innerHTML = stats[0]['nb_lines']
+    // document.getElementById("service4").innerHTML = stats[0]['nb_commit']
+    // document.getElementById("service5").innerHTML = stats[0]['nb_repos']
 
-function graphCreation() {
-  // set the dimensions and margins of the graph
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-  width = 960 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+    // console.log(stats[0]['nb_repos'])
+    // var data = [stats[0]['nb_commit'], stats[0]['nb_repos'], stats[0]['nb_lines']];
 
-  // set the ranges
-  var x = d3.scaleTime().range([0, width]);
-  var y = d3.scaleLinear().range([height, 0]);
+    var label = [];
+    var nbLines = [];
+    var nbCommits = [];
+    var nbRepos = [];
+    for(var i = 0; i < stats.length; ++i) {
+      label.push(stats[i]['username']);
+      nbLines.push(stats[i]['nb_lines']);
+      nbCommits.push(stats[i]['nb_commit']);
+      nbRepos.push(stats[i]['nb_repos']);
+    }
 
-  // define the line
-  var valueline = d3.line()
-    .x(function(d) { return x(d.year); })
-    .y(function(d) { return y(d.population); });
+    var serie = []
+    var serie1 = {
+      label: "Nombre de lignes",
+      values: nbLines
+    }
+    var serie2 = {
+      label: "Nombre de commits",
+      values: nbCommits
+    }
+    var serie3 = {
+      label: "Nombre de repos",
+      values: nbRepos
+    }
+    serie.push(serie1)
+    serie.push(serie2)
+    serie.push(serie3)
 
-  // append the svg obgect to the body of the page
-  // appends a 'group' element to 'svg'
-  // moves the 'group' element to the top left margin
-  var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g").attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+    var data = {
+      labels: label,
+      series: serie
+    }
+    console.log(data)
 
-  // Get the data
-  function getJson() {
-      return fetch('http://192.168.0.108:8081/dataF.json')
-          .then(response => {
-              if (!response.ok) 
-                  throw new Error('Not found!');
-              return response.json();
-          })
-          .then(data => {
-              console.log(JSON.stringify(data));
-              data.forEach(function(d) {
-                  d.year = d.year;
-                  d.population = +d.population;
-              });
-              
-              // Scale the range of the data
-              x.domain(d3.extent(data, function(d) { return d.year; }));
-              y.domain([0, d3.max(data, function(d) { return d.population; })]);
+    // Zip the series data together (first values, second values, etc.)
+    var zippedData = [];
+    for (var i=0; i<data.labels.length; i++) {
+      for (var j=0; j<data.series.length; j++) {
+        zippedData.push(data.series[j].values[i]);
+      }
+    }
 
-              // Add the valueline path.
-              svg.append("path")
-                  .data([data])
-                  .attr("class", "line")
-                  .attr("d", valueline);
+    var chartWidth   = 450,
+    barHeight        = 20,
+    groupHeight      = barHeight * data.series.length,
+    gapBetweenGroups = 100,
+    spaceForLabels   = 150,
+    spaceForLegend   = 150;
 
-              // Add the X Axis
-              svg.append("g")
-                  .attr("transform", "translate(0," + height + ")")
-                  .call(d3.axisBottom(x));
+    // Color scale
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
 
-              // Add the Y Axis
-              svg.append("g")
-                  .call(d3.axisLeft(y));
-          }, error => {
-            if (error){
-                alert('Error bitch ' + error);
-                throw error;
-            }
+    var x = d3.scaleOrdinal()
+        .domain([0, d3.max(zippedData)])
+        .range([0, chartWidth]);
+    var x2 = d3.scaleOrdinal()
+        .domain([0, d3.max(serie2)])
+        .range([0, chartWidth]);
+    var x3 = d3.scaleOrdinal()
+        .domain([0, d3.max(serie3)])
+        .range([0, chartWidth]);
+
+// var x = d3.scale.linear()
+//     .domain([0, d3.max(zippedData)])
+//     .range([0, chartWidth]);
+
+    var y = d3.scaleOrdinal()
+        .range([chartHeight + gapBetweenGroups, 0]);
+
+    var yAxis = d3.axisLeft()
+        .scale(y)
+        .tickFormat('')
+        .tickSize(0);
+
+    // Specify the chart area and dimensions
+    var chart = d3.select("#service1")
+        .attr("width", spaceForLabels + chartWidth + spaceForLegend)
+        .attr("height", chartHeight);
+
+    // Create bars
+    var bar = chart.selectAll("g")
+        .data(zippedData)
+        .enter().append("g")
+        .attr("transform", function(d, i) {
+          return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
         });
-  }
-    
-  getJson();
+
+    // Create rectangles of the correct width
+    bar.append("rect")
+        .attr("fill", function(d,i) { return color(i % data.series.length); })
+        .attr("class", "bar")
+        .attr("x", 16)
+        .attr("y", 12)
+        .attr("width", x)
+        .attr("height", barHeight - 1);
+
+    // Add text label in bar
+    bar.append("text")
+        .attr("x", function(d) { return x(d) - 3; })
+        .attr("y", barHeight / 2)
+        .attr("fill", "red")
+        .attr("dy", ".35em")
+        .text(function(d) { return d; });
+
+    // Draw labels
+    bar.append("text")
+        .attr("class", "label")
+        .attr("x", function(d) { return - 10; })
+        .attr("y", groupHeight / 2)
+        .attr("dy", ".35em")
+        .text(function(d,i) {
+          if (i % data.series.length === 0)
+            return data.labels[Math.floor(i/data.series.length)];
+          else
+            return ""});
+
+    chart.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
+          .call(yAxis);
+
+    // Draw legend
+    var legendRectSize = 18,
+        legendSpacing  = 4;
+
+    var legend = chart.selectAll('.legend')
+        .data(data.series)
+        .enter()
+        .append('g')
+        .attr('transform', function (d, i) {
+            var height = legendRectSize + legendSpacing;
+            var offset = -gapBetweenGroups/2;
+            var horz = spaceForLabels + chartWidth + 40 - legendRectSize;
+            var vert = i * height - offset;
+            return 'translate(' + horz + ',' + vert + ')';
+        });
+
+    legend.append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', function (d, i) { return color(i); })
+        .style('stroke', function (d, i) { return color(i); });
+
+    legend.append('text')
+        .attr('class', 'legend')
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', legendRectSize - legendSpacing)
+        .text(function (d) { return d.label; });
+      })
 }

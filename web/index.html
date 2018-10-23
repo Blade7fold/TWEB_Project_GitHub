@@ -24,11 +24,14 @@
     <link rel="stylesheet" href="css/vendor.css">
     <link rel="stylesheet" href="css/main.css">
     <style> 
-        .line {
-           fill: none;
-           stroke: green;
-           stroke-width: 5px;
-        }
+        #service1 div {
+        font: 10px sans-serif;
+        background-color: steelblue;
+        text-align: right;
+        padding: 3px;
+        margin: 1px;
+        color: white;
+    }
      </style>
 
     <!-- script
@@ -67,7 +70,7 @@
                     <li class="current"><a class="smoothscroll"  href="#home" title="home">Home</a></li>
                     <li><a class="smoothscroll"  href="#about" title="about">About</a></li>
                     <li><a class="smoothscroll"  href="#twinder" title="twinder" onclick="changeFollowersInfo()">Twinder</a></li>
-                    <li><a class="smoothscroll"  href="#race" title="race" onclick="graphCreation()">Race Them All</a></li>
+                    <li><a class="smoothscroll"  href="#race" title="race" onclick="changeStatsInfo()">Race Them All</a></li>
                     <li><a class="smoothscroll"  href="#commits" title="commits">Commits</a></li>
                     <li><a class="smoothscroll"  href="#clients" title="clients">Employees</a></li>
                     <li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>
@@ -270,15 +273,15 @@
         <div class="row race-list block-1-2 block-tab-full">
 
             <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-icon">
+                <!-- <div class="service-icon">
                     <i class="icon-paint-brush"></i>
-                </div>
-                <div class="service-text">
-                    <h3 class="h2">Brand Identity</h3>
+                </div> -->
+                <div class="service-text" id="service1">
+                    <!-- <h3 class="h2">Brand Identity</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
+                    </p> -->
                 </div>
             </div>
 
@@ -286,7 +289,7 @@
                 <div class="service-icon">
                     <i class="icon-group"></i>
                 </div>
-                <div class="service-text">
+                <div class="service-text" id="service2">
                     <h3 class="h2">Illustration</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
@@ -299,7 +302,7 @@
                 <div class="service-icon">
                     <i class="icon-megaphone"></i>
                 </div>  
-                <div class="service-text">
+                <div class="service-text"id="service3">
                     <h3 class="h2">Marketing</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
@@ -312,7 +315,7 @@
                 <div class="service-icon">
                     <i class="icon-earth"></i>
                 </div>
-                <div class="service-text">
+                <div class="service-text"id="service4">
                     <h3 class="h2">Web Design</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
@@ -325,7 +328,7 @@
                 <div class="service-icon">
                     <i class="icon-cube"></i>
                 </div>
-                <div class="service-text">
+                <div class="service-text"id="service5">
                     <h3 class="h2">Packaging Design</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
@@ -615,6 +618,7 @@
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
     <script src="js/index.js"></script>
+    <!-- <script src="js/graphConstr.js"></script> -->
 
 </body>
 
