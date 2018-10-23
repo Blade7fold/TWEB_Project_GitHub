@@ -85,15 +85,15 @@ function changeStatsInfo() {
 
     var serie = []
     var serie1 = {
-      label: "Nombre de lignes",
+      label: "Nb lignes",
       values: nbLines
     }
     var serie2 = {
-      label: "Nombre de commits",
+      label: "Nb commits",
       values: nbCommits
     }
     var serie3 = {
-      label: "Nombre de repos",
+      label: "Nb repos",
       values: nbRepos
     }
     serie.push(serie1)
@@ -118,26 +118,22 @@ function changeStatsInfo() {
     barHeight        = 20,
     groupHeight      = barHeight * data.series.length,
     gapBetweenGroups = 100,
-    spaceForLabels   = 150,
+    spaceForLabels   = 80,
     spaceForLegend   = 150;
 
     // Color scale
     var color = d3.scaleOrdinal(d3.schemeCategory20);
     var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
 
-    var x = d3.scaleOrdinal()
+    var x = d3.scaleLinear()
         .domain([0, d3.max(zippedData)])
         .range([0, chartWidth]);
-    var x2 = d3.scaleOrdinal()
+    var x2 = d3.scaleLinear()
         .domain([0, d3.max(serie2)])
         .range([0, chartWidth]);
-    var x3 = d3.scaleOrdinal()
+    var x3 = d3.scaleLinear()
         .domain([0, d3.max(serie3)])
         .range([0, chartWidth]);
-
-// var x = d3.scale.linear()
-//     .domain([0, d3.max(zippedData)])
-//     .range([0, chartWidth]);
 
     var y = d3.scaleOrdinal()
         .range([chartHeight + gapBetweenGroups, 0]);
@@ -148,7 +144,7 @@ function changeStatsInfo() {
         .tickSize(0);
 
     // Specify the chart area and dimensions
-    var chart = d3.select("#service1")
+    var chart = d3.select("#service1").append("svg")
         .attr("width", spaceForLabels + chartWidth + spaceForLegend)
         .attr("height", chartHeight);
 
@@ -164,14 +160,12 @@ function changeStatsInfo() {
     bar.append("rect")
         .attr("fill", function(d,i) { return color(i % data.series.length); })
         .attr("class", "bar")
-        .attr("x", 16)
-        .attr("y", 12)
         .attr("width", x)
         .attr("height", barHeight - 1);
 
     // Add text label in bar
     bar.append("text")
-        .attr("x", function(d) { return x(d) - 3; })
+        .attr("x", 5)
         .attr("y", barHeight / 2)
         .attr("fill", "red")
         .attr("dy", ".35em")
@@ -180,8 +174,8 @@ function changeStatsInfo() {
     // Draw labels
     bar.append("text")
         .attr("class", "label")
-        .attr("x", function(d) { return - 10; })
-        .attr("y", groupHeight / 2)
+        .attr("x", 5)
+        .attr("y", groupHeight / 2 - barHeight * 2)
         .attr("dy", ".35em")
         .text(function(d,i) {
           if (i % data.series.length === 0)

@@ -2387,7 +2387,7 @@ html.no-csstransitions .home-content__main {
 }
 
 .race-list .service-text {
-    margin-left: 7.8rem;
+    margin-left: 0.8rem;
 }
 
 .race-list .service-icon {
@@ -2402,9 +2402,9 @@ html.no-csstransitions .home-content__main {
  * responsive:
  * race
  * ------------------------------------------------------------------- */
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1600px) {
     .race-list {
-        max-width: 1000px;
+        max-width: 1600px;
     }
     .race-list .service-item:nth-child(2n+1) {
         padding-right: 30px;

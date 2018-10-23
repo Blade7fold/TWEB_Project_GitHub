@@ -197,7 +197,7 @@ class Github {
               }
             }
             return nb_lines
-          }, err => {return 0;}).catch(err => console.log("FUCK DANNY ET JIMMYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYyyy" + err))
+          }, err => {return 0;}).catch(err => console.log(err))
       })
   }
 
