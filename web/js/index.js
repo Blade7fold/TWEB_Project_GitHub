@@ -100,6 +100,14 @@ function changeStatsInfo() {
     serie.push(serie2)
     serie.push(serie3)
 
+    var allMaxes = []
+    for (let k = 0; k < serie.length; k++) {
+      allMaxes.push(d3.max(serie[k]['values']))
+    }
+    let maxOfMaxes = d3.max(allMaxes)
+    console.log(allMaxes)
+    console.log(maxOfMaxes)
+
     var data = {
       labels: label,
       series: serie
@@ -160,7 +168,15 @@ function changeStatsInfo() {
     bar.append("rect")
         .attr("fill", function(d,i) { return color(i % data.series.length); })
         .attr("class", "bar")
-        .attr("width", x)
+        .attr("width", function(d,i) {
+          for (let j = 0; j < data.series.length; j++) {
+            
+            if ((i - j) % data.series.length == 0) {
+              return (d / allMaxes[j]) * chartWidth;
+            }
+          }
+          return 0;
+        })
         .attr("height", barHeight - 1);
 
     // Add text label in bar
