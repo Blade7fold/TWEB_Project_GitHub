@@ -619,7 +619,7 @@ input[type="password"],
 textarea,
 select {
     display: block;
-    height: 6rem;
+    height: 4rem;
     padding: 1.5rem 0;
     border: 0;
     outline: none;
@@ -628,7 +628,7 @@ select {
     font-family: "montserrat-light", sans-serif;
     font-size: 1.4rem;
     line-height: 3rem;
-    width: 100px;
+    width: 150px;
     max-width: 100%;
     background: rgba(192, 192, 192, 0.856);
     border-bottom: 2px solid rgba(0, 0, 0, 0.15);
@@ -2293,27 +2293,27 @@ html.no-csstransitions .home-content__main {
     margin-top: 6rem;
 }
 
-.race-list .service-item {
+.race-list .commit-item {
     margin-bottom: .9rem;
 }
 
-.race-list .service-item h3 {
+.race-list .commit-item h3 {
     margin-top: 0;
 }
 
-.race-list .service-item:nth-child(2n+1) {
+.race-list .commit-item:nth-child(2n+1) {
     padding-right: 50px;
 }
 
-.race-list .service-item:nth-child(2n+2) {
+.race-list .commit-item:nth-child(2n+2) {
     padding-left: 50px;
 }
 
-.race-list .service-text {
+.race-list .commit-text {
     margin-left: 0.8rem;
 }
 
-.race-list .service-icon {
+.race-list .commit-icon {
     float: left;
     color: #39b54a;
     font-size: 4.8rem;
@@ -2329,10 +2329,10 @@ html.no-csstransitions .home-content__main {
     .race-list {
         max-width: 1600px;
     }
-    .race-list .service-item:nth-child(2n+1) {
+    .race-list .commit-item:nth-child(2n+1) {
         padding-right: 30px;
     }
-    .race-list .service-item:nth-child(2n+2) {
+    .race-list .commit-item:nth-child(2n+2) {
         padding-left: 30px;
     }
 }
@@ -2341,10 +2341,10 @@ html.no-csstransitions .home-content__main {
     .race-list h3 {
         font-size: 2.5rem;
     }
-    .race-list .service-item:nth-child(2n+1) {
+    .race-list .commit-item:nth-child(2n+1) {
         padding-right: 20px;
     }
-    .race-list .service-item:nth-child(2n+2) {
+    .race-list .commit-item:nth-child(2n+2) {
         padding-left: 20px;
     }
 }
@@ -2355,17 +2355,17 @@ html.no-csstransitions .home-content__main {
         max-width: 500px;
         text-align: center;
     }
-    .race-list .service-item:nth-child(n) {
+    .race-list .commit-item:nth-child(n) {
         padding-right: 15px;
         padding-left: 15px;
     }
     .race-list h3 {
         font-size: 3rem;
     }
-    .race-list .service-text {
+    .race-list .commit-text {
         margin-left: 0;
     }
-    .race-list .service-icon {
+    .race-list .commit-icon {
         font-size: 4.5rem;
         float: none;
         margin-top: 0;
@@ -2376,7 +2376,7 @@ html.no-csstransitions .home-content__main {
     .s-race {
         padding-top: 12rem;
     }
-    .race-list .service-item:nth-child(n) {
+    .race-list .commit-item:nth-child(n) {
         padding-right: 10px;
         padding-left: 10px;
     }
@@ -2386,7 +2386,7 @@ html.no-csstransitions .home-content__main {
 }
 
 @media only screen and (max-width: 400px) {
-    .race-list .service-item:nth-child(n) {
+    .race-list .commit-item:nth-child(n) {
         padding-right: 0;
         padding-left: 0;
     }
@@ -2415,27 +2415,27 @@ html.no-csstransitions .home-content__main {
     margin-top: 6rem;
 }
 
-.commits-list .service-item {
+.commits-list .commit-item {
     margin-bottom: .9rem;
 }
 
-.commits-list .service-item h3 {
+.commits-list .commit-item h3 {
     margin-top: 0;
 }
 
-.commits-list .service-item:nth-child(2n+1) {
+.commits-list .commit-item:nth-child(2n+1) {
     padding-right: 50px;
 }
 
-.commits-list .service-item:nth-child(2n+2) {
+.commits-list .commit-item:nth-child(2n+2) {
     padding-left: 50px;
 }
 
-.commits-list .service-text {
+.commits-list .commit-text {
     margin-left: 7.8rem;
 }
 
-.commits-list .service-icon {
+.commits-list .commit-icon {
     float: left;
     color: #39b54a;
     font-size: 4.8rem;
@@ -2451,10 +2451,10 @@ html.no-csstransitions .home-content__main {
     .commits-list {
         max-width: 1000px;
     }
-    .commits-list .service-item:nth-child(2n+1) {
+    .commits-list .commit-item:nth-child(2n+1) {
         padding-right: 30px;
     }
-    .commits-list .service-item:nth-child(2n+2) {
+    .commits-list .commit-item:nth-child(2n+2) {
         padding-left: 30px;
     }
 }
@@ -2463,10 +2463,10 @@ html.no-csstransitions .home-content__main {
     .commits-list h3 {
         font-size: 2.5rem;
     }
-    .commits-list .service-item:nth-child(2n+1) {
+    .commits-list .commit-item:nth-child(2n+1) {
         padding-right: 20px;
     }
-    .commits-list .service-item:nth-child(2n+2) {
+    .commits-list .commit-item:nth-child(2n+2) {
         padding-left: 20px;
     }
 }
@@ -2477,17 +2477,17 @@ html.no-csstransitions .home-content__main {
         max-width: 500px;
         text-align: center;
     }
-    .commits-list .service-item:nth-child(n) {
+    .commits-list .commit-item:nth-child(n) {
         padding-right: 15px;
         padding-left: 15px;
     }
     .commits-list h3 {
         font-size: 3rem;
     }
-    .commits-list .service-text {
+    .commits-list .commit-text {
         margin-left: 0;
     }
-    .commits-list .service-icon {
+    .commits-list .commit-icon {
         font-size: 4.5rem;
         float: none;
         margin-top: 0;
@@ -2498,7 +2498,7 @@ html.no-csstransitions .home-content__main {
     .s-commits {
         padding-top: 12rem;
     }
-    .commits-list .service-item:nth-child(n) {
+    .commits-list .commit-item:nth-child(n) {
         padding-right: 10px;
         padding-left: 10px;
     }
@@ -2508,7 +2508,7 @@ html.no-csstransitions .home-content__main {
 }
 
 @media only screen and (max-width: 400px) {
-    .commits-list .service-item:nth-child(n) {
+    .commits-list .commit-item:nth-child(n) {
         padding-right: 0;
         padding-left: 0;
     }

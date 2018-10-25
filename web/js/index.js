@@ -33,9 +33,10 @@ function getUserFollowers(seed) {
   return request('follower', {'seed': seed})
 }
 
-let infosTwinder;
 let newSeed = 0;
+console.log("Before " + newSeed);
 function changeFollowersInfo() {
+  let infosTwinder;
   getUserFollowers(document.getElementById("seed2").value).then(twinder => {
     console.log('First ' + twinder);
     infosTwinder = twinder;
@@ -44,11 +45,10 @@ function changeFollowersInfo() {
   })
 }
 
-let find = true;
-console.log("Before " + newSeed);
 function selectUsers(infoUsers) {
   console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed);
   let i = 0;
+  let find = true;
   while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= 10) {
     console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' ' + i + ' Seed in: ' + newSeed);
     ++i;
@@ -85,36 +85,51 @@ function nextUser(action) {
 
 function showTwinderUsers(showUsers, noUser) {
   console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
-  document.getElementById("userName").innerHTML = showUsers[noUser]['login']
+  document.getElementById("usernamePic").innerHTML = showUsers[noUser]['login']
   if(showUsers[noUser]['avatar_url'] !== null) {
     console.log("Found avatar");
     document.getElementById("profilePic1").href = showUsers[noUser]['avatar_url'];
     document.getElementById("profilePic2").src = showUsers[noUser]['avatar_url'];
     document.getElementById("profilePic3").href = showUsers[noUser]['avatar_url'];
-    document.getElementsByClassName("pswp__img").href = showUsers[noUser]['avatar_url'];
+    document.getElementsByClassName("pswp__img").src = showUsers[noUser]['avatar_url'];
     // document.getElementById("profilePic").innerHTML = showUsers[noUser]['avatar_url']
-  }
-  else {
+  }else {
     console.log("Couldn't find avatar");
-  //   textNode = document.select("#profilePic1")
-  //   .attr("href", showUsers[noUser]['avatar_url']);
-  //   textNode = document.select("#profilePic1")
-  //   .attr("img", showUsers[noUser]['avatar_url']);
-  //   document.getElementById("profilePic").innerHTML = "images/user.jpg"
   }
-  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"//123412 - 1232
+  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"//Seed 123412 - 1232
 }
 
+$('#username1').keyup(function (){
+  $('#username2').val($(this).val());
+});
+$('#username2').keyup(function (){
+  $('#username1').val($(this).val());
+});
+
 function getUserCommits(username) {
-  return request('commit', 'user=' + username)
+  return request('commit', {'user': username})
 }
 
 function changeCommitsInfo() {
 
-  //let username =  document.getElementById("commit_username").value
+  //let username = document.getElementById("commit_username").value
+  console.log('Username:' + document.getElementById("username2").value)
+  document.getElementById("usernameSelected").textContent = document.getElementById("username2").value
+  getUserCommits(document.getElementById("username2").value).then(commits => {
+    for (let i = 0, j = 1; i < Object.keys(commits).length; ++i, ++j) {
+      let positionTag = document.createElement("div")
+      positionTag.setAttribute("class", "col-block commit-item")
+      positionTag.setAttribute("data-aos", "fade-up")
+      let tag = document.createElement("div")
+      positionTag.setAttribute("class", "commit-text")
+      positionTag.appendChild(tag)
+      let commitTitle = document.createElement("h3")
+      commitTitle.setAttribute("id", "title" + j)
+      
+      let commitText = document.createElement("p")
+      commitText
 
-  getUserCommits('jimmyVerdasca').then(commits => {
-    for (let i = 0; i < Object.keys(commits).length; i++) {
+
       textNode = document.getElementById("commit_text" + i)
       if (textNode == undefined) {
         textNode = document.createElement('p');
@@ -133,15 +148,6 @@ function getUserStats(seed) {
 function changeStatsInfo() {
   getUserStats(123).then(stats => {
     console.log(stats)
-    // document.getElementById("service1").innerHTML = stats[0]['username']
-    // document.getElementById("service2").innerHTML = stats[0]['avatar_url']
-    // document.getElementById("service3").innerHTML = stats[0]['nb_lines']
-    // document.getElementById("service4").innerHTML = stats[0]['nb_commit']
-    // document.getElementById("service5").innerHTML = stats[0]['nb_repos']
-
-    // console.log(stats[0]['nb_repos'])
-    // let data = [stats[0]['nb_commit'], stats[0]['nb_repos'], stats[0]['nb_lines']];
-
     let label = [];
     let nbLines = [];
     let nbCommits = [];

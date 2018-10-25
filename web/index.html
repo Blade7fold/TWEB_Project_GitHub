@@ -71,7 +71,7 @@
                     <li><a class="smoothscroll"  href="#about" title="about">About</a></li>
                     <li><a class="smoothscroll"  href="#twinder" title="twinder" onclick="changeFollowersInfo()">Twinder</a></li>
                     <li><a class="smoothscroll"  href="#race" title="race" onclick="changeStatsInfo()">Race Them All</a></li>
-                    <li><a class="smoothscroll"  href="#commits" title="commits">Commits</a></li>
+                    <li><a class="smoothscroll"  href="#commits" title="commits" onclick="changeCommitsInfo()">Commits</a></li>
                     <li><a class="smoothscroll"  href="#clients" title="clients">Employees</a></li>
                     <li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>
                 </ul>
@@ -116,15 +116,24 @@
                         style="background-image: url('images/race_them_all.png'); width: 240px; height: 140px;">
                         Race Them All
                     </a>
-                    <a href="#commits" class="smoothscroll btn btn--stroke"
+                    <a href="#commits" class="smoothscroll btn btn--stroke" onclick="changeCommitsInfo()"
                         style="background-image: url('images/funny_commits.png')">
                         Commits
                     </a>
-                    <a style="font: bold; color: crimson">
-                        Choose your Seed: <input id="seed1" type="number" min="0" max="31000000" value="0"
-                                style="margin-left: 550px">
-                    </a>
                     
+                </div>
+                <div class="row race-list block-1-2 block-tab-full">
+                    <div class="col-block service-item">
+                        <h3 class="h4" style="text-align: center; color: crimson">
+                            Choose your Seed (Twinder and Race Them All): <input id="seed1" type="number"
+                                            min="0" max="31000000" value="0" style="margin-left: 225px">
+                        </h3>
+                    </div>
+                    <div class="col-block service-item">
+                        <h3 class="h4" style="text-align: center; color: crimson">
+                            Choose a Username (Commits): <input id="username1" type="text" style="margin-left: 225px">
+                        </h3>
+                </div>
                 </div>
 
             </div>
@@ -229,7 +238,7 @@
                             </div>
     
                             <div class="item-folio__text">
-                                <h3 class="item-folio__title" id="userName">
+                                <h3 class="item-folio__title" id="usernamePic">
                                     Username
                                 </h3>
                                 <p class="item-folio__cat" id="nbFollowers">
@@ -249,12 +258,12 @@
                         </div>
                     </div> <!-- end masonry__brick -->
                 </div> <!-- end masonry -->
-                <a style="margin-left: 480px; font: bold; color: crimson">
+                <h3 class="h4" style="text-align: center; font: bold; color: crimson">
                     Choose your Seed: <input id="seed2" type="number" min="0" max="31000000" value="0"
-                                            style="margin-left: 505px">
+                                            style="margin-left: 485px">
                     <input type="image" src="images/change.png" alt="submit" width="100" height="100"
-                            style="margin-left: 505px" onclick="changeFollowersInfo()">
-                </a>
+                            onclick="changeFollowersInfo()">
+                </h3>
             </div> <!-- end col-full -->
         </div> <!-- end twinder-content -->
 
@@ -364,12 +373,25 @@
                 <h3 class="subhead">Search someone's commits to have some fun</h3>
             </div>
         </div> <!-- end section-header -->
+            
+        <h3 class="h4" style="color: crimson; text-align: center" data-aos="fade-up">
+            Choose a Username: <input id="username2" type="text" style="margin-left: 685px">
+                <input type="image" src="images/change.png" alt="submit" width="100" height="100"
+                            onclick="changeCommitsInfo()">
+        </h3>
 
-        <div class="row commits-list block-1-2 block-tab-full">
+        <div class="row commits-list block-1-2 block-tab-full" id="insertCommits">
 
-            <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-text">
-                    <h3 class="h2" style="color: #FFFFFF">Brand Identity</h3>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <h3 class="h3" style="color: #FFFFFF; text-align: right" data-aos="fade-up">Selected username:</h3>
+            </div>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <h3 class="h3" style="color: #FFFFFF; text-align: left" data-aos="fade-up" id="usernameSelected">Username</h3>
+            </div>
+
+            <div class="col-block commit-item" data-aos="fade-up">
+                <div class="commit-text">
+                    <h3 class="h2" style="color: #FFFFFF">1. Commit1</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
@@ -377,12 +399,9 @@
                 </div>
             </div>
 
-            <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-icon">
-                    <i class="icon-group"></i>
-                </div>
-                <div class="service-text">
-                    <h3 class="h2" style="color: #FFFFFF">Illustration</h3>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <div class="commit-text">
+                    <h3 class="h2" style="color: #FFFFFF">2. Commit2</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
@@ -390,12 +409,9 @@
                 </div>
             </div>
 
-            <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-icon">
-                    <i class="icon-megaphone"></i>
-                </div>  
-                <div class="service-text">
-                    <h3 class="h2" style="color: #FFFFFF">Marketing</h3>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <div class="commit-text">
+                    <h3 class="h2" style="color: #FFFFFF">3. Commit3</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
@@ -403,12 +419,9 @@
                 </div>
             </div>
 
-            <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-icon">
-                    <i class="icon-earth"></i>
-                </div>
-                <div class="service-text">
-                    <h3 class="h2" style="color: #FFFFFF">Web Design</h3>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <div class="commit-text">
+                    <h3 class="h2" style="color: #FFFFFF">4. Commit4</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
@@ -416,12 +429,9 @@
                 </div>
             </div>
 
-            <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-icon">
-                    <i class="icon-cube"></i>
-                </div>
-                <div class="service-text">
-                    <h3 class="h2" style="color: #FFFFFF">Packaging Design</h3>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <div class="commit-text">
+                    <h3 class="h2" style="color: #FFFFFF">5. Commit5</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
@@ -429,10 +439,9 @@
                 </div>
             </div>
     
-            <div class="col-block service-item" data-aos="fade-up">
-                <div class="service-icon"><i class="icon-lego-block"></i></div>
-                <div class="service-text">
-                    <h3 class="h2" style="color: #FFFFFF">Web Development</h3>
+            <div class="col-block commit-item" data-aos="fade-up">
+                <div class="commit-text">
+                    <h3 class="h2" style="color: #FFFFFF">6. Commit6</h3>
                     <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
                     Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
                     Sunt suscipit voluptas ipsa in tempora esse soluta sint.
