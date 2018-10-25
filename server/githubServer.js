@@ -38,7 +38,7 @@ class Github {
         Authorization: `token ${this.token}`
       },
     };
-
+console.log(url)
     return fetch(url, options)
       .then(res => res.json()
         .then((data) => {
