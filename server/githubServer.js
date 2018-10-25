@@ -55,7 +55,7 @@ class Github {
    * @param {seed of the first user we want} since 
    */
   users(since) {
-    return this.request('/users', {'since':since,'page':1,'per_page':3});
+    return this.request('/users', {'since':since,'page':1,'per_page':5});
   }
 
   //TODO écrire un test pour quand on donne pas les bonnes meta données
@@ -157,9 +157,12 @@ class Github {
    * request to github to get the number of commits of a given user
    * @param {username of the user we want the number of commits} user 
    */
-  nbCommitsOf(user) {
-    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})}).catch(err => {console.log(err); return {'total_count': 0}})
+  nbCommitsOf(user, relaunchAtFail = true) {
+    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})}).catch(err => {return {'total_count': 0}})
       .then(commits => {
+        if (commits['total_count'] == 0 && relaunchAtFail) {
+          return nbCommitsOf(user, false)
+        }
         return commits['total_count']
       })
   }
@@ -179,25 +182,33 @@ class Github {
           for (let i = 0; i < nb_repos; i++) {
             let page = Math.ceil((i  + 1) / per_page)
             let index_on_page = i - (page - 1) * per_page
-            names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page}))
+            names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
+              .catch(err => {
+                this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
+                .catch(err => {
+                  console.log(repos[index_on_page]['full_name'] + ' repos failed to load')
+                })
+              }))
           }
         }
+        let nb_lines = 0
         return Promise.all(names_repos)
           .then(contributions_data => {
-            let nb_lines = 0
-            for (let i = 0; i < nb_repos; i++) {
-              if (contributions_data[i] !== undefined) {
-                for (let j = 0; j < contributions_data[i].length; j++) {
-                  if (contributions_data[i][j] !== undefined) {
-                    for (let k = 0; k < contributions_data[i][j]['weeks'].length; k++) {
-                      nb_lines += contributions_data[i][j]['weeks'][k]['a']
+            if (contributions_data !== undefined) {
+              for (let i = 0; i < nb_repos; i++) {
+                if (contributions_data[i] !== undefined) {
+                  for (let j = 0; j < contributions_data[i].length; j++) {
+                    if (contributions_data[i][j] !== undefined) {
+                      for (let k = 0; k < contributions_data[i][j]['weeks'].length; k++) {
+                        nb_lines += contributions_data[i][j]['weeks'][k]['a']
+                      }
                     }
                   }
                 }
               }
             }
             return nb_lines
-          }, err => {return 0;}).catch(err => console.log(err))
+          }).catch(err =>  {console.log(err); return nb_lines;} )
       })
   }
 
