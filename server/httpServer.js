@@ -55,10 +55,8 @@ app.get('/follower', function(req, res) {
  */
 app.get('/stat', function(req, res) {
     let q = url.parse(req.url, true)
-    console.log(req.url)
     git.stats(q.query['seed'])
     .then(data => {
-        console.log(data)
         try {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.json(data)

@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 var utils = require('./utils')
+var parse = require('parse-link-header');
 let util = new utils()
 
 /**
@@ -29,7 +30,7 @@ class Github {
    * @param {dictionary used by github to navigate through big data answers} search_opt 
    * @param {dictionnary to add specific headers to the request} opts 
    */
-  request(path, search_opt = {}, opts = {}) {
+  request(path, search_opt = {}, onlyHeaders = false, opts = {}) {
     let url = `${this.baseUrl}${path}?${util.dictToFormattedString(search_opt)}`;
     const options = {
       ...opts,
@@ -38,16 +39,18 @@ class Github {
         Authorization: `token ${this.token}`
       },
     };
-console.log(url)
     return fetch(url, options)
       .then(res => res.json()
         .then((data) => {
           if (!res.ok) {
             throw new ResponseError(res, data);
           }
+          if(onlyHeaders) {
+            return res.headers
+          }
 
           return data;
-        }));
+        })).catch(err => {throw new ResponseError(err)});
   }
 
   /**
@@ -55,7 +58,7 @@ console.log(url)
    * @param {seed of the first user we want} since 
    */
   users(since) {
-    return this.request('/users', {'since':since,'page':1,'per_page':3});
+    return this.request('/users', {'since':since,'page':1,'per_page':5}).catch(err => {return undefined});
   }
 
   //TODO écrire un test pour quand on donne pas les bonnes meta données
@@ -67,17 +70,21 @@ console.log(url)
    * @param {list of the meta informations we want to keep} info 
    */
   userInfo(since, info = ['login']) {
-    return this.users(since).then((function(infos_users) {
-      let infos = [];
-      for (let i = 0; i < infos_users.length; i++) {
-        let user_info = {}
-        for (let j = 0; j < info.length; j++) {
-          user_info[info[j]] = infos_users[i][info[j]]
+    return this.users(since)
+      .then(function(infos_users) {
+        if(infos_users === undefined) {
+          return undefined;
         }
-        infos.push(user_info)
-      }
-      return infos
-    }).bind(this))
+        let infos = [];
+        for (let i = 0; i < infos_users.length; i++) {
+          let user_info = {}
+          for (let j = 0; j < info.length; j++) {
+            user_info[info[j]] = infos_users[i][info[j]]
+          }
+          infos.push(user_info)
+        }
+        return infos
+      }, function(err) {console.log('plop' + err);return undefined;})
   }
 
   /**
@@ -96,7 +103,7 @@ console.log(url)
       for (let i = 0; i < infos_users.length; i++) {
         let user = infos_users[i]
         url_followers = user['followers_url'].replace(this.baseUrl,'')
-        followers_promises.push(this.request(url_followers))
+        followers_promises.push(this.request(url_followers, {"per_page": 1}, true))
         cleaned_user = {'login': user['login'],
                         'avatar_url': user['avatar_url']
                       }
@@ -104,7 +111,7 @@ console.log(url)
       }
       return Promise.all(followers_promises).then(list_followers => {
         for (let i = 0; i < list_followers.length; i++) {
-          cleaned_infos_users[i]['nb_followers'] = list_followers[i].length;
+          cleaned_infos_users[i]['nb_followers'] = parse(list_followers[i].get('Link'))['last']['page']
         }
         return cleaned_infos_users
       })
@@ -117,11 +124,8 @@ console.log(url)
    * @param {username of the user we want the number of repositories} user 
    */
   nbRepositoriesOf(user) {
-    return this.repositoriesOf(user)
+    return this.repositoriesOf(user).catch(err => {return {'total_count': 0}})
       .then(repos => {
-        if (repos == '') {
-          return 0
-        }
         return repos['total_count']
       })
   }
@@ -158,7 +162,7 @@ console.log(url)
    * @param {username of the user we want the number of commits} user 
    */
   nbCommitsOf(user) {
-    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})}).catch(err => {console.log(err); return {'total_count': 0}})
+    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})}).catch(err => {return {'total_count': 0}})
       .then(commits => {
         return commits['total_count']
       })
@@ -169,6 +173,7 @@ console.log(url)
    * @param {username of the user we want the number of line code} user 
    */
   linesOf(user) {
+    let nb_lines = 0
     return this.repositoriesOf(user)
       .then(repos_data => {
         let per_page = 30
@@ -179,26 +184,33 @@ console.log(url)
           for (let i = 0; i < nb_repos; i++) {
             let page = Math.ceil((i  + 1) / per_page)
             let index_on_page = i - (page - 1) * per_page
-            names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page}))
+            names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
+              .catch(err => {
+                this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
+                .catch(err => {
+                  //console.log(repos[index_on_page]['full_name'] + ' repos failed to load')
+                })
+              }))
           }
         }
         return Promise.all(names_repos)
           .then(contributions_data => {
-            let nb_lines = 0
-            for (let i = 0; i < nb_repos; i++) {
-              if (contributions_data[i] !== undefined) {
-                for (let j = 0; j < contributions_data[i].length; j++) {
-                  if (contributions_data[i][j] !== undefined) {
-                    for (let k = 0; k < contributions_data[i][j]['weeks'].length; k++) {
-                      nb_lines += contributions_data[i][j]['weeks'][k]['a']
+            if (contributions_data !== undefined) {
+              for (let i = 0; i < nb_repos; i++) {
+                if (contributions_data[i] !== undefined) {
+                  for (let j = 0; j < contributions_data[i].length; j++) {
+                    if (contributions_data[i][j] !== undefined) {
+                      for (let k = 0; k < contributions_data[i][j]['weeks'].length; k++) {
+                        nb_lines += contributions_data[i][j]['weeks'][k]['a']
+                      }
                     }
                   }
                 }
               }
             }
             return nb_lines
-          }, err => {return 0;}).catch(err => console.log(err))
-      })
+          }).catch(err =>  {console.log(err);return nb_lines;} )
+      }).catch(err => {return nb_lines})
   }
 
   /**
@@ -212,8 +224,18 @@ console.log(url)
    * @param {seed of the first user we want the statistics} since 
    */
   stats(since) {
-    return this.userInfo(since, ['login', 'avatar_url'])
+    return this.userInfo(since, ['login', 'avatar_url']).catch(err => {return undefined;})
       .then(name_and_avatar => {
+
+        if (name_and_avatar === undefined) {
+          return {'username': "private",
+                  'avatar_url': undefined,
+                  'nb_lines': 0,
+                  'nb_commit': 0,
+                  'nb_repos': 0
+                  }
+        }
+
         let statistics = []
         for (let i = 0; i < name_and_avatar.length; i++) {
           let name = name_and_avatar[i]['login']
@@ -229,7 +251,7 @@ console.log(url)
           
           }))
         }
-        return Promise.all(statistics).then(result => {return result})
+        return Promise.all(statistics).catch(err => console.log(err)).then(result => {return result})
       }
     )
   }
