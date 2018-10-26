@@ -2,7 +2,7 @@
 let entryPoint = 'http://localhost:8080'
 
 function request(path, search_opt, opts = {}) {
-  let url = `${entryPoint}/${path}?seed=123`;
+  let url = `${entryPoint}/${path}?seed=${search_opt.seed}`;
 
   let options = {
     ...opts, 
@@ -21,22 +21,98 @@ function request(path, search_opt, opts = {}) {
     })});
 }
 
+$('#seed1').keyup(function (){
+  $('#seed2').val($(this).val());
+  $('#seed3').val($(this).val());
+});
+$('#seed2').keyup(function (){
+  $('#seed1').val($(this).val());
+  $('#seed3').val($(this).val());
+});
+$('#seed3').keyup(function (){
+  $('#seed1').val($(this).val());
+  $('#seed2').val($(this).val());
+});
+
 function getUserFollowers(seed) {
-  return request('follower', 'seed=' + seed)
+  console.log("SEARCH: " + seed)
+  return request('follower', {'seed': seed})
 }
 
+let infosTwinder;
+let newSeed = 0;
 function changeFollowersInfo() {
-  getUserFollowers(1234).then(followers => {
-    document.getElementById("userName").innerHTML = followers[0]['login']
-    document.getElementById("git_race_button").innerHTML = followers[0]['avatar_url']
-    if(parseInt(followers[0]['nb_followers']) < 10) {
-      document.getElementById("twinder_button").innerHTML = followers[0]['nb_followers']
-    }
+  getUserFollowers(document.getElementById("seed2").value).then(twinder => {
+    console.log('First ' + twinder);
+    infosTwinder = twinder;
+    newSeed = parseInt(document.getElementById("seed2").value);
+    selectUsers(infosTwinder);
   })
 }
 
+let find = true;
+console.log("Before " + newSeed);
+function selectUsers(infoUsers) {
+  console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed);
+  let i = 0;
+  while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= 10) {
+    console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' ' + i + ' Seed in: ' + newSeed);
+    ++i;
+    ++newSeed;
+    if(i === infoUsers.length){
+      find = false;
+      console.log('Again')
+      console.log('New seed: ' + newSeed + ' Find: ' + find);
+      getUserFollowers(newSeed).then(newTwinder => {
+        console.log('New again ' + newTwinder);
+        selectUsers(newTwinder);
+      });
+    }
+  }
+  if(find) {
+    showTwinderUsers(infoUsers, i);
+  }
+  find = true;
+}
+
+function nextUser(action) {
+  if(action) {
+    console.log("Followed :D")
+  }else {
+    console.log("Not Followed D:")
+  }
+
+  ++newSeed;
+  getUserFollowers(newSeed).then(newTwinder => {
+    console.log('Next user ' + newTwinder);
+    selectUsers(newTwinder);
+  });
+}
+
+function showTwinderUsers(showUsers, noUser) {
+  console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
+  document.getElementById("userName").innerHTML = showUsers[noUser]['login']
+  if(showUsers[noUser]['avatar_url'] !== null) {
+    console.log("Found avatar");
+    document.getElementById("profilePic1").href = showUsers[noUser]['avatar_url'];
+    document.getElementById("profilePic2").src = showUsers[noUser]['avatar_url'];
+    document.getElementById("profilePic3").href = showUsers[noUser]['avatar_url'];
+    document.getElementsByClassName("pswp__img").href = showUsers[noUser]['avatar_url'];
+    // document.getElementById("profilePic").innerHTML = showUsers[noUser]['avatar_url']
+  }
+  else {
+    console.log("Couldn't find avatar");
+  //   textNode = document.select("#profilePic1")
+  //   .attr("href", showUsers[noUser]['avatar_url']);
+  //   textNode = document.select("#profilePic1")
+  //   .attr("img", showUsers[noUser]['avatar_url']);
+  //   document.getElementById("profilePic").innerHTML = "images/user.jpg"
+  }
+  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"//123412 - 1232
+}
+
 function getUserCommits(username) {
-  return request('commit', 'user=' + username)
+  return request('commit', {'user': username})
 }
 
 function changeCommitsInfo() {
@@ -57,7 +133,7 @@ function changeCommitsInfo() {
 }
 
 function getUserStats(seed) {
-  return request('stat', 'seed=' + seed)
+  return request('stat', {'seed': seed})
 }
 
 
@@ -92,8 +168,6 @@ function drawVerticalGraph(data, idHTML) {
     }
   }
 
-  console.log(level)
-
   let chartHeight  = 450,
   barWidth         = 20,
   groupWidth      = barWidth,
@@ -122,6 +196,7 @@ function drawVerticalGraph(data, idHTML) {
       .tickSize(0);
 
   // Specify the chart area and dimensions
+  d3.select(idHTML).selectAll("svg").remove();
   var chart = d3.select(idHTML).append("svg")
       .attr("width", chartWidth)
       .attr("height", spaceForLabels + chartHeight);
@@ -252,6 +327,7 @@ function drawHorizontalGraph(data, idHTML) {
       .tickSize(0);
 
   // Specify the chart area and dimensions
+  d3.select(idHTML).selectAll("svg").remove();
   var chart = d3.select(idHTML).append("svg")
       .attr("width", spaceForLabels + chartWidth + spaceForLegend)
       .attr("height", chartHeight);
@@ -332,14 +408,21 @@ function drawHorizontalGraph(data, idHTML) {
 }
 
 function changeStatsInfo() {
-  getUserStats(123).then(stats => {
+  getUserStats(document.getElementById("seed3").value).then(stats => {
+    // document.getElementById("service1").innerHTML = stats[0]['username']
+    // document.getElementById("service2").innerHTML = stats[0]['avatar_url']
+    // document.getElementById("service3").innerHTML = stats[0]['nb_lines']
+    // document.getElementById("service4").innerHTML = stats[0]['nb_commit']
+    // document.getElementById("service5").innerHTML = stats[0]['nb_repos']
 
-    var label = [];
-    var nbLines = [];
-    var nbCommits = [];
-    var nbRepos = [];
+    // console.log(stats[0]['nb_repos'])
+    // let data = [stats[0]['nb_commit'], stats[0]['nb_repos'], stats[0]['nb_lines']];
 
-    for(var i = 0; i < stats.length; ++i) {
+    let label = [];
+    let nbLines = [];
+    let nbCommits = [];
+    let nbRepos = [];
+    for(let i = 0; i < stats.length; ++i) {
       label.push(stats[i]['username']);
       nbLines.push(stats[i]['nb_lines']);
       nbCommits.push(stats[i]['nb_commit']);
@@ -371,4 +454,3 @@ function changeStatsInfo() {
     drawVerticalGraph(data, "#service2")
   })
 }
-

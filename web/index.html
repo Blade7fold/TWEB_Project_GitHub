@@ -112,15 +112,16 @@
                         style="background-image: url('images/twinder.png'); margin-left: 50px">
                         Twinder
                     </a>
-                    <a href="#race" class="smoothscroll btn btn--stroke" onclick="graphCreation()"
+                    <a href="#race" class="smoothscroll btn btn--stroke" onclick="changeStatsInfo()"
                         style="background-image: url('images/race_them_all.png'); width: 240px; height: 140px;">
                         Race Them All
                     </a>
-                    <a href="#commits" class="smoothscroll btn btn--stroke" style="background-image: url('images/funny_commits.png')">
+                    <a href="#commits" class="smoothscroll btn btn--stroke"
+                        style="background-image: url('images/funny_commits.png')">
                         Commits
                     </a>
-                    <a>
-                        Choose your Seed: <input type="number" min="1" max="31000000" value="1"
+                    <a style="font: bold; color: crimson">
+                        Choose your Seed: <input id="seed1" type="number" min="0" max="31000000" value="0"
                                 style="margin-left: 550px">
                     </a>
                     
@@ -192,7 +193,7 @@
 
     <!-- twinder
     ================================================== -->
-    <section id='twinder' class="s-twinder" style="background-image: url('images/background_page.jpg');">
+    <section id='twinder' class="s-twinder">
 
         <div class="intro-wrap">
                 
@@ -210,10 +211,10 @@
                 <div class="masonry">
                     
                     <div class="home-content__buttons">
-                        <a href="#race" class="smoothscroll btn btn--stroke" title="Not Follow"
+                        <a class="smoothscroll btn btn--stroke" title="Not Follow" onclick="nextUser(false)"
                           style="background-image: url('images/nope.jpg'); height: 15rem;
                           margin-top: 20rem"></a>
-                        <a href="#twinder" class="smoothscroll btn btn--stroke" title="Follow"
+                        <a class="smoothscroll btn btn--stroke" title="Follow" onclick="nextUser(true)"
                          style="background-image: url('images/follow.jpg'); margin-left: 50rem; height: 15rem"></a>
                     </div>
     
@@ -222,8 +223,8 @@
                             <!-- Changer l'href et src des images par celui de l'image de l'utilisateur de GitHub
                                 Changer title avec le nom de l'utilisateur -->
                             <div class="item-folio__thumb">
-                                <a href="images/user.jpg" class="thumb-link" data-size="1050x700">
-                                    <img src="images/user.jpg">
+                                <a class="thumb-link" id="profilePic1" data-size="1050x700" href="images/user.jpg">
+                                    <img src="images/user.jpg" id="profilePic2">
                                 </a>
                             </div>
     
@@ -231,13 +232,13 @@
                                 <h3 class="item-folio__title" id="userName">
                                     Username
                                 </h3>
-                                <p class="item-folio__cat">
-                                    Follow me!!
+                                <p class="item-folio__cat" id="nbFollowers">
+                                    0 followers
                                 </p>
                             </div>
     
                             <!-- A changer href pour avoir le lien vers le profil de l'utilisateur dans GitHub -->
-                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Profile Picture">
+                            <a href="images/user.jpg" id="profilePic3"  class="item-folio__project-link" title="Profile Picture">
                                 <i class="icon-link"></i>
                             </a>
 
@@ -248,11 +249,12 @@
                         </div>
                     </div> <!-- end masonry__brick -->
                 </div> <!-- end masonry -->
-                <a style="margin-left: 480px; font: bold; color: aquamarine">
-                    Choose your Seed: <input type="number" min="1" max="31000000" value="1"
-                                        style="margin-left: 505px">
+                <a style="margin-left: 480px; font: bold; color: crimson">
+                    Choose your Seed: <input id="seed2" type="number" min="0" max="31000000" value="0"
+                                            style="margin-left: 505px">
+                    <input type="image" src="images/change.png" alt="submit" width="100" height="100"
+                            style="margin-left: 505px" onclick="changeFollowersInfo()">
                 </a>
-
             </div> <!-- end col-full -->
         </div> <!-- end twinder-content -->
 
@@ -263,6 +265,7 @@
     ================================================== -->
     <section id='race' class="s-race">
 
+
         <div class="row section-header has-bottom-sep" data-aos="fade-up">
             <div class="col-full">
                 <h1 class="display-2">Race Them All</h1>
@@ -270,24 +273,25 @@
             </div>
         </div> <!-- end section-header -->
 
+        
+        <div>
+            <h3 class="h4" style="font: bold; color: crimson">
+                Choose your Seed: <input id="seed3" type="number" min="0" max="31000000" value="0"
+                        style="margin-left: 550px">
+            </h3>
+            <input type="image" src="images/change.png" alt="submit" width="100" height="100"
+                            style="margin-left: 505px" onclick="changeStatsInfo()">
+        </div>
+
         <div class="row race-list block-1-2 block-tab-full">
 
             <div class="col-block service-item" data-aos="fade-up">
-                <!-- <div class="service-icon">
-                    <i class="icon-paint-brush"></i>
-                </div> -->
                 <div class="service-text" id="service1">
-                    <!-- <h3 class="h2">Brand Identity</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p> -->
                 </div>
             </div>
 
             <div class="col-block service-item" data-aos="fade-up">
                 <div class="service-text" id="service2">
-                    
                 </div>
             </div>
 
@@ -509,7 +513,7 @@
 
             <div class="pswp__container">
                 <div class="pswp__item"></div>
-                <div class="pswp__item"></div>
+                <div class="pswp__item" id="showImage"></div>
                 <div class="pswp__item"></div>
             </div>
 
