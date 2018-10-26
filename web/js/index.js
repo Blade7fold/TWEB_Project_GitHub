@@ -116,27 +116,61 @@ function changeCommitsInfo() {
   console.log('Username:' + document.getElementById("username2").value)
   document.getElementById("usernameSelected").textContent = document.getElementById("username2").value
   getUserCommits(document.getElementById("username2").value).then(commits => {
+    console.log('Got: ' + commits + ' Length: ' + commits.length)
+    let insert = document.getElementById("insertCommits");
     for (let i = 0, j = 1; i < Object.keys(commits).length; ++i, ++j) {
-      let positionTag = document.createElement("div")
-      positionTag.setAttribute("class", "col-block commit-item")
-      positionTag.setAttribute("data-aos", "fade-up")
-      let tag = document.createElement("div")
-      positionTag.setAttribute("class", "commit-text")
-      positionTag.appendChild(tag)
-      let commitTitle = document.createElement("h3")
-      commitTitle.setAttribute("id", "title" + j)
-      
-      let commitText = document.createElement("p")
-      commitText
+      // console.log('Shit -> ' + document.getElementById("commitsPlace" + j));
+      // Creating the entry point with the fade event
+      if(document.getElementById("commitsPlace" + j) === null) {
+        console.log('Creating...')
+        let positionTag = document.createElement("div")
+        positionTag.setAttribute("class", "col-block commit-item")
+        positionTag.setAttribute("data-aos", "fade-up")
+        positionTag.setAttribute("id", "commitsPlace"+ j)
 
+        // Creating the title and commit text part
+        let tag = document.createElement("div")
+        tag.setAttribute("class", "commit-text")
+        positionTag.appendChild(tag)
+        
+        // Creating the title part and inserting it first in the text part
+        let commitTitle = document.createElement("h3")
+        commitTitle.setAttribute("class", "h5")
+        commitTitle.setAttribute("id", "title" + j)
+        commitTitle.setAttribute("style", "color: #FFFFFF")
+        tag.appendChild(commitTitle)
 
-      textNode = document.getElementById("commit_text" + i)
-      if (textNode == undefined) {
-        textNode = document.createElement('p');
-        textNode.setAttribute("id", "commit_text" + i);
-        document.getElementById("patata").appendChild(textNode); 
+        // Inserting the correct title
+        let title = document.createTextNode("Commit n°" + j)
+        commitTitle.appendChild(title)
+
+        // Creating the commit part and inserting it after in the text part
+        let commitText = document.createElement("p")
+        commitText.setAttribute("id", "text" + j)
+        commitText.setAttribute("style", "font-weight: bold")
+        tag.appendChild(commitText)
+
+        // Inserting the correct commit
+        let textCommit = document.createTextNode(commits[i]);
+        commitText.appendChild(textCommit)
+
+        insert.appendChild(positionTag)
+      }else {
+        do {
+          console.log('Deleting...')
+          insert.removeChild(document.getElementById("commitsPlace" + j));
+          j++
+        }while(document.getElementById("commitsPlace" + j) !== null);
+        j = 0;
+        i = -1;
       }
-      textNode.innerHTML = commits[i]
+      // let textNode = document.getElementById("commit_text" + i)
+      // if (textNode == undefined) {
+      //   textNode = document.createElement('p');
+      //   textNode.setAttribute("id", "commit_text" + i);
+      //   document.getElementById("patata").appendChild(textNode); 
+      // }
+      // textNode.innerHTML = commits[i]
     }
   })
 }
