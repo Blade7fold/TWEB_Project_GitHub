@@ -7,10 +7,10 @@ let entryPoint = 'http://localhost:8080'
  * @param {*} opts Options for searching
  */
 function request(path, search_opt, opts = {}) {
-  let url = `${entryPoint}/${path}?`;
+  let url = entryPoint + '/' + path +  '?';
   let list_opt = Object.keys(search_opt);
   for(let i = 0; i < list_opt.length; ++i) {
-    url += `${list_opt[i]}=${search_opt[list_opt[i]]}`;
+    url += list_opt[i] + '=' + search_opt[list_opt[i]];
   }
   let options = {
     ...opts, 
