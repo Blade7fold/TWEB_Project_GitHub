@@ -43,17 +43,16 @@ class Github {
     return fetch(url, options)
       .then(res => {
         return res.json()
-        .then((data) => {
-          console.log("BIIIIIIIIIIIIIITCH " + data);
-          if (!res.ok) {
-            throw new ResponseError(res, data);
-          }
-          if(onlyHeaders) {
-            return res.headers
-          }
-          // console.log('Data: ' + data[0]['login'])
-          return data;
-        })}).catch(err => {throw new ResponseError(err)});
+          .then((data) => {
+            if (!res.ok) {
+              throw new ResponseError(res, data);
+            }
+            if(onlyHeaders) {
+              return res.headers
+            }
+            return data;
+          })
+      })
   }
 
   /**
@@ -61,10 +60,9 @@ class Github {
    * @param {seed of the first user we want} since 
    */
   users(since) {
-    return this.request('/users', {'since':since,'page':1,'per_page':5}).catch(err => {return undefined});
+    return this.request('/users', {'since':since,'page':1,'per_page':5});
   }
 
-  //TODO écrire un test pour quand on donne pas les bonnes meta données
   /**
    * method sending a request to get the users informations from github
    * and formatting them to keep only the specified meta informations
@@ -74,10 +72,7 @@ class Github {
    */
   userInfo(since, info = ['login']) {
     return this.users(since)
-      .then(function(infos_users) {
-        if(infos_users === undefined) {
-          return undefined;
-        }
+      .then(infos_users => {
         let infos = [];
         for (let i = 0; i < infos_users.length; i++) {
           let user_info = {}
@@ -87,7 +82,7 @@ class Github {
           infos.push(user_info)
         }
         return infos
-      }, function(err) {console.log('plop' + err);return undefined;})
+      })
   }
 
   /**
@@ -132,10 +127,14 @@ class Github {
    * @param {username of the user we want the number of repositories} user 
    */
   nbRepositoriesOf(user) {
-    return this.repositoriesOf(user).catch(err => {return {'total_count': 0}})
+    return this.repositoriesOf(user)
       .then(repos => {
+        if(repos === undefined) {
+          console.log("repos undefined")
+          return 0;
+        }
         return repos['total_count']
-      })
+      }).catch(err => {return 0})
   }
 
   /**
@@ -143,7 +142,7 @@ class Github {
    * @param {username of the user we want the repositories} user 
    */
   repositoriesOf(user) {
-    return this.request('/search/repositories', {'q':util.dictToSearchOption({'user':user, 'fork': 'true'})})
+    return this.request('/search/repositories', {'q':util.dictToSearchOption({'user':user, 'fork': 'true'})}).catch(err => {console.log("fuck6" + err.status);return undefined})
   }
 
   /**
@@ -153,7 +152,7 @@ class Github {
    * @param {list of the commits message currently found} commit_msg 
    */
   commitsOf(user, page = 1, commit_msg = []) {
-    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':util.dictToSearchOption({'author':user})}).catch(err => {console.log(err); return ''})
+    return this.request('/search/commits', {'page':page++, 'per_page': 100, 'q':util.dictToSearchOption({'author':user})}).catch(err => {console.log("fuck7"); return ''})
       .then(commits => {
         if (commits) {
           for (let i = 0; i < commits['items'].length; i++) {
@@ -162,7 +161,7 @@ class Github {
           return this.commitsOf(user, page, commit_msg)
         }
         return commit_msg
-      }, error => {return commit_msg})
+      }, error => {return commit_msg}).catch(err => {console.log("fuck20"); return ''})
   }
 
   /**
@@ -170,7 +169,11 @@ class Github {
    * @param {username of the user we want the number of commits} user 
    */
   nbCommitsOf(user) {
-    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})}).catch(err => {return {'total_count': 0}})
+    return this.request('/search/commits', {'q':util.dictToSearchOption({'author':user})})
+      .catch(err => {
+        console.log("fuck8" + err);
+        return {'total_count': 0}
+      })
       .then(commits => {
         return commits['total_count']
       })
@@ -182,43 +185,69 @@ class Github {
    */
   linesOf(user) {
     let nb_lines = 0
+    let forbidden = false
     return this.repositoriesOf(user)
+      .catch(err => {
+        console.log("catch" + err);
+        if(err.status === 403) {
+          forbidden = true
+        }
+        return undefined
+      })
       .then(repos_data => {
+        if(repos_data === undefined || forbidden) {
+          console.log("repos pas trouvé")
+          return 0;
+        }
         let per_page = 30
         let nb_repos = repos_data['total_count']
         let repos = repos_data['items']
         let names_repos = []
         if(repos != []) {
-          for (let i = 0; i < nb_repos; i++) {
+          for (let i = 0; i < nb_repos && !forbidden; i++) {
             let page = Math.ceil((i  + 1) / per_page)
             let index_on_page = i - (page - 1) * per_page
-            names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
-              .catch(err => {
-                this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
+            if(repos[index_on_page] !== undefined) {
+               names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
                 .catch(err => {
-                  //console.log(repos[index_on_page]['full_name'] + ' repos failed to load')
+                  console.log("fuck10" + err);
+                  if(err.status === 403) {
+                    console.log("STOP FORBIDDEN")
+                    forbidden = true
+                  }
+                  return undefined
                 })
-              }))
-          }
-        }
-        return Promise.all(names_repos)
-          .then(contributions_data => {
-            if (contributions_data !== undefined) {
-              for (let i = 0; i < nb_repos; i++) {
-                if (contributions_data[i] !== undefined) {
-                  for (let j = 0; j < contributions_data[i].length; j++) {
-                    if (contributions_data[i][j] !== undefined) {
-                      for (let k = 0; k < contributions_data[i][j]['weeks'].length; k++) {
-                        nb_lines += contributions_data[i][j]['weeks'][k]['a']
+                .then(contributions_data => {
+                  if (contributions_data !== undefined) {
+                    for (let i = 0; i < contributions_data.length; i++) {
+                      if (contributions_data[i] !== undefined) {
+                        for (let k = 0; k < contributions_data[i]['weeks'].length; k++) {
+                          nb_lines += contributions_data[i]['weeks'][k]['a']
+                        }
                       }
                     }
                   }
-                }
-              }
-            }
-            return nb_lines
-          }).catch(err =>  {console.log(err);return nb_lines;} )
-      }).catch(err => {return nb_lines})
+                  return nb_lines
+                })
+                .catch(err =>  {
+                  console.log("fuck9");
+                  return nb_lines;
+                })
+              )
+            } 
+          }
+        } 
+        return Promise.all(names_repos).then(result => {return nb_lines;}).catch(err => {
+          console.log("fuck11" + err);return nb_lines})
+          
+      }).catch(err => { 
+        console.log("fuck10");
+        if (nb_lines !== undefined) {
+          return nb_lines
+        } else {
+          return 0
+        }
+        })
   }
 
   /**
@@ -232,9 +261,10 @@ class Github {
    * @param {seed of the first user we want the statistics} since 
    */
   stats(since) {
-    return this.userInfo(since, ['login', 'avatar_url']).catch(err => {return undefined;})
+    return this.userInfo(since, ['login', 'avatar_url'])
       .then(name_and_avatar => {
 
+        /*
         if (name_and_avatar === undefined) {
           return {'username': "private",
                   'avatar_url': undefined,
@@ -242,7 +272,7 @@ class Github {
                   'nb_commit': 0,
                   'nb_repos': 0
                   }
-        }
+        }*/
 
         let statistics = []
         for (let i = 0; i < name_and_avatar.length; i++) {
@@ -259,9 +289,11 @@ class Github {
           
           }))
         }
-        return Promise.all(statistics).catch(err => console.log(err)).then(result => {return result})
+        return Promise.all(statistics).catch(err => console.log("plop" + err)).then(result => {return result})
       }
-    )
+    ).catch(err => {
+      console.log(err);
+      })
   }
 }
 
