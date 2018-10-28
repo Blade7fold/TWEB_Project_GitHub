@@ -220,9 +220,12 @@ function getUserStats(seed) {
   return request('stat', {'seed': seed});
 }
 
-
-
 function drawVerticalGraph(data, idHTML) {
+  
+  /**
+   * utilitary method to calculate de height of a given bar given his index
+   * @param {index} i 
+   */
   function getHeight(d, i) {
     let height = chartHeight - spaceForLabels
     for (let j = 0; j < data.series.length; j++) {
@@ -235,6 +238,7 @@ function drawVerticalGraph(data, idHTML) {
     }
   }
 
+  // array of possible power result. First is the more powerfull
   let levelClassification = ["goku", "god", "spartian", "knight", "goblin", "slime"];
   let level = [];
 
@@ -244,7 +248,7 @@ function drawVerticalGraph(data, idHTML) {
   }
   let maxOfMaxes = d3.max(allMaxes);
 
-  var zippedData = [];
+  let zippedData = [];
   for (var i=0; i<data.series[0].values.length; i++) {
     for (var j=0; j<data.series.length; j++) {
       zippedData.push(data.series[j].values[i]);
@@ -258,68 +262,61 @@ function drawVerticalGraph(data, idHTML) {
   spaceForLabels   = 30,
   spaceForLegend   = 150;
 
-  var color = d3.scaleOrdinal(d3.schemeCategory20);
-  var chartWidth = barWidth * zippedData.length + gapBetweenGroups * data.series[0].values.length;
+  let color = d3.scaleOrdinal(d3.schemeCategory20);
+  let chartWidth = barWidth * zippedData.length + gapBetweenGroups * data.series[0].values.length;
 
   for (let i = 0; i < data.labels.length; i++) {
     let index = (i + 1) * data.series.length - 1;
-    level.push(levelClassification[Math.floor((getHeight(1, index) / chartHeight) * levelClassification.length)])
+    level.push(levelClassification[Math.floor((getHeight(index) / chartHeight) * levelClassification.length)])
   }
 
-  var y = d3.scaleLinear()
+  let y = d3.scaleLinear()
       .domain([0, d3.max(zippedData) * 3])
       .range([chartHeight, 0]);
 
-  var x = d3.scaleLinear()
+  let x = d3.scaleLinear()
       .range([0, chartWidth]);
 
-  var xAxis = d3.axisBottom()
+  let xAxis = d3.axisBottom()
       .scale(x)
       .tickFormat('')
       .tickSize(0);
 
   // Specify the chart area and dimensions
-  d3.select(idHTML).selectAll("svg").remove();
-  var chart = d3.select(idHTML).append("svg")
-      .attr("width", chartWidth)
-      .attr("height", spaceForLabels + chartHeight);
+  let chart = createChart(idHTML, chartWidth, spaceForLabels + chartHeight);
 
   // Create bars
-  var bar = chart.selectAll("g")
-      .data(zippedData)
-      .enter().append("g")
-      .attr("transform", function(d, i) {
-        let x = gapBetweenGroups * (0.5 + Math.floor(i/data.series.length)) - Math.floor(i/(data.series.length)) * barWidth;
-        return "translate(" + x + "," + spaceForLabels + ")";
-      });
+  let functionTransformation = function(d, i) {
+    let x = gapBetweenGroups * (0.5 + Math.floor(i/data.series.length)) - Math.floor(i/(data.series.length)) * barWidth;
+    return "translate(" + x + "," + spaceForLabels + ")";
+  }
+  let bar = createBar(chart, zippedData, functionTransformation);
 
   // Create rectangles of the correct width
-  bar.append("rect")
-      .attr("fill", function(d,i) { return color(i % data.series.length); })
-      .attr("class", "bar")
-      .attr("width", barWidth)
-      .attr("y", function(d,i) {
-        return getHeight(d, i)
-        })
-      .attr("height", function(d, i) {
-        for (let j = 0; j < data.series.length; j++) {
-          if ((i - j) % data.series.length == 0) {
-            return (d / allMaxes[j]) * (chartHeight) / 3;
-          }
-        }
-      });
+  let functionX = function(d,i) {
+    return d;
+  };
+  let functionY = function(d,i) {
+    return getHeight(i);
+  };
+  let functionWidth = barWidth;
+  let functionHeight = function(d, i) {
+    for (let j = 0; j < data.series.length; j++) {
+      if ((i - j) % data.series.length == 0) {
+        return (d / allMaxes[j]) * (chartHeight) / 3;
+      }
+    }
+  };
+  drawRectangles(bar, data, color, functionX, functionY, functionWidth, functionHeight);
       
   // Draw labels
-  bar.append("text")
-      .attr("class", "label")
-      .attr("x", -20)
-      .attr("y", chartHeight - 10)
-      .attr("dy", ".35em")
-      .text(function(d,i) {
-        if (i % data.series.length === 0)
-          return data.labels[Math.floor(i/data.series.length)];
-        else
-          return ""});
+  drawLabels(chart, bar, data, -20, chartHeight - 10, function(d,i) {
+    if (i % data.series.length === 0)
+      return data.labels[Math.floor(i/data.series.length)];
+    else
+      return ""
+    }
+  );
 
   chart.append("g")
       .attr("class", "x axis")
@@ -329,38 +326,15 @@ function drawVerticalGraph(data, idHTML) {
       })
       .call(xAxis);
 
-  // Draw legend
   var legendRectSize = 18,
       legendSpacing  = 4;
 
-  var legend = chart.selectAll('.legend')
-      .data(data.series)
-      .enter()
-      .append('g')
-      .attr('transform', function (d, i) {
-          var width = legendRectSize + legendSpacing;
-          var offset = -gapBetweenGroups/2;
-          var vert = spaceForLabels + chartHeight + 40 - legendRectSize;
-          var horz = i * width - offset;
-          return 'translate(' + horz + ',' + vert + ')';
-      });
+  drawLegend(chart, data, color, chartHeight, legendRectSize, legendSpacing, gapBetweenGroups, spaceForLabels);
 
   var classification = chart.selectAll('.classification')
       .data(level)
       .enter()
       .append('g');
-
-  legend.append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', function (d, i) { return color(i); })
-      .style('stroke', function (d, i) { return color(i); });
-
-  legend.append('text')
-      .attr('class', 'legend')
-      .attr('x', legendRectSize + legendSpacing)
-      .attr('y', legendRectSize - legendSpacing)
-      .text(function (d) { return d.label; });
 
   classification.append('text')
       .attr('class', 'classification')
@@ -368,7 +342,7 @@ function drawVerticalGraph(data, idHTML) {
         return gapBetweenGroups * (0.5 + i) - i * barWidth + legendRectSize + 5;
       })
       .attr('y', function(d, i) {
-        return getHeight(d, (i + 1) * data.series.length - 1) + 2 * legendRectSize;
+        return getHeight((i + 1) * data.series.length - 1) + 2 * legendRectSize;
       })
       .text(function (d) { return d; });
 }
@@ -396,49 +370,42 @@ function drawHorizontalGraph(data, idHTML) {
   spaceForLegend   = 150;
 
   // Color scale
-  var color = d3.scaleOrdinal(d3.schemeCategory20);
-  var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
+  let color = d3.scaleOrdinal(d3.schemeCategory20);
+  let chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
 
-  var x = d3.scaleLinear()
+  let x = d3.scaleLinear()
       .domain([0, d3.max(zippedData)])
       .range([0, chartWidth]);
 
-  var y = d3.scaleOrdinal()
+  let y = d3.scaleOrdinal()
       .range([chartHeight + gapBetweenGroups, 0]);
 
-  var yAxis = d3.axisLeft()
+  let yAxis = d3.axisLeft()
       .scale(y)
       .tickFormat('')
       .tickSize(0);
 
   // Specify the chart area and dimensions
-  d3.select(idHTML).selectAll("svg").remove();
-  var chart = d3.select(idHTML).append("svg")
-      .attr("width", spaceForLabels + chartWidth + spaceForLegend)
-      .attr("height", chartHeight);
+  let chart = createChart(idHTML, spaceForLabels + chartWidth + spaceForLegend, chartHeight);
 
   // Create bars
-  var bar = chart.selectAll("g")
-      .data(zippedData)
-      .enter().append("g")
-      .attr("transform", function(d, i) {
-        return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
-      });
+  let functionTransformation = function(d, i) {
+    return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
+  }
+  let bar = createBar(chart, zippedData, functionTransformation);
 
   // Create rectangles of the correct width
-  bar.append("rect")
-      .attr("fill", function(d,i) {
-        return color(i % data.series.length);
-      })
-      .attr("class", "bar")
-      .attr("width", function(d,i) {
-        for (let j = 0; j < data.series.length; j++) {
-          if ((i - j) % data.series.length == 0) {
-            return (d / allMaxes[j]) * chartWidth;
-          }
-        }
-      })
-      .attr("height", barHeight - 1);
+  let functionX = 0;
+  let functionY = 0;
+  let functionWidth = function(d,i) {
+    for (let j = 0; j < data.series.length; j++) {
+      if ((i - j) % data.series.length == 0) {
+        return (d / allMaxes[j]) * chartWidth;
+      }
+    }
+  };
+  let functionHeight = barHeight - 1;
+  drawRectangles(bar, data, color, functionX, functionY, functionWidth, functionHeight);barHeight - 1
 
   // Add text label in bar
   bar.append("text")
@@ -450,46 +417,79 @@ function drawHorizontalGraph(data, idHTML) {
         return d;
       });
 
-  // Draw labels
-  bar.append("text")
-      .attr("class", "label")
-      .attr("x", 5)
-      .attr("y", groupHeight / 2 - barHeight * 2)
-      .attr("dy", ".35em")
-      .text(function(d,i) {
-        if (i % data.series.length === 0) {
-          return data.labels[Math.floor(i/data.series.length)];
-        }else {
-          return ""
-        }
-      });
+  let yLabel = groupHeight / 2 - barHeight * 2;
+  drawLabels(chart, bar, data, 5, yLabel, function(d,i) {
+    if (i % data.series.length === 0) {
+      return data.labels[Math.floor(i/data.series.length)];
+    }else {
+      return "";
+    }
+  });
 
   chart.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
         .call(yAxis);
 
-  // Draw legend
   var legendRectSize = 18,
       legendSpacing  = 4;
+
+  drawLegend(chart, data, color, chartWidth, legendRectSize, legendSpacing, gapBetweenGroups, spaceForLabels);
+}
+
+function createChart(idNodeHTML, width, height) {
+  d3.select(ididNodeHTMLHTML).selectAll("svg").remove();
+  return d3.select(idNodeHTML).append("svg")
+    .attr("width", width)
+    .attr("height", height);
+}
+
+function createBar(chart, data, functionTransformation) {
+  return chart.selectAll("g")
+    .data(data)
+    .enter().append("g")
+    .attr("transform", functionTransformation);
+}
+
+function drawRectangles(bar, data, color, functionX, functionY, functionWidth, functionHeight) {
+  bar.append("rect")
+      .attr("fill", function(d,i) {
+        return color(i % data.series.length);
+      })
+      .attr("class", "bar")
+      .attr("y", functionY)
+      .attr("width", functionWidth)
+      .attr("height", functionHeight);
+}
+
+function drawLabels(chart, bar, data, x, y, getTextFunction) {
+  bar.append("text")
+      .attr("class", "label")
+      .attr("x", x)
+      .attr("y", y)
+      .attr("dy", ".35em")
+      .text(getTextFunction);
+}
+
+function drawLegend(chart, data, colors, legendSize, legendRectSize, legendSpacing, gapBetweenGroups, spaceForLabels) {
 
   var legend = chart.selectAll('.legend')
       .data(data.series)
       .enter()
       .append('g')
       .attr('transform', function (d, i) {
-          var height = legendRectSize + legendSpacing;
+          var size = legendRectSize + legendSpacing;
           var offset = -gapBetweenGroups/2;
-          var horz = spaceForLabels + chartWidth + 40 - legendRectSize;
-          var vert = i * height - offset;
+          var horz = spaceForLabels + legendSize + 40 - legendRectSize;
+          var vert = i * size - offset;
           return 'translate(' + horz + ',' + vert + ')';
       });
 
   legend.append('rect')
       .attr('width', legendRectSize)
       .attr('height', legendRectSize)
-      .style('fill', function (d, i) { return color(i); })
-      .style('stroke', function (d, i) { return color(i); });
+      .style('fill', function (d, i) { return colors(i); })
+      .style('stroke', function (d, i) { return colors(i); });
 
   legend.append('text')
       .attr('class', 'legend')
@@ -498,8 +498,16 @@ function drawHorizontalGraph(data, idHTML) {
       .text(function (d) { return d.label; });
 }
 
+/**
+ * ask to our middleware statistiques of several users. Then draw two graphs.
+ * The first represent simply the statistics of each users relatively to the group.
+ * The second represent a powerbar that concatenate each stat of a same user. More the bar are powerfull, 
+ * better is the name of the race a user gets.
+ */
 function changeStatsInfo() {
   getUserStats(document.getElementById("seed3").value).then(stats => {
+
+    // Receive and format the data 
     let label = [];
     let nbLines = [];
     let nbCommits = [];
@@ -532,6 +540,7 @@ function changeStatsInfo() {
       labels: label,
       series: serie
     }
+
     drawHorizontalGraph(data, "#service1");
     drawVerticalGraph(data, "#service2");
   });
