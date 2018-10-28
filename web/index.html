@@ -40,11 +40,6 @@
     <script src="js/pace.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
-    <!-- favicons
-    ================================================== -->
-    <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
-
 </head>
 
 <body id="top">
@@ -52,13 +47,6 @@
     <!-- header
     ================================================== -->
     <header class="s-header">
-
-        <!-- <div class="header-logo">
-            <a class="site-logo" href="index.html">
-                <img src="images/logo.png" alt="Homepage">
-            </a>
-        </div> -->
-
         <nav class="header-nav">
 
             <a href="#0" class="header-nav__close" title="close"><span>Close</span></a>
@@ -72,8 +60,7 @@
                     <li><a class="smoothscroll"  href="#twinder" title="twinder" onclick="changeFollowersInfo()">Twinder</a></li>
                     <li><a class="smoothscroll"  href="#race" title="race" onclick="changeStatsInfo()">Race Them All</a></li>
                     <li><a class="smoothscroll"  href="#commits" title="commits" onclick="changeCommitsInfo()">Commits</a></li>
-                    <li><a class="smoothscroll"  href="#clients" title="clients">Employees</a></li>
-                    <li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>
+                    <li><a class="smoothscroll"  href="#employees" title="employees">Employees</a></li>
                 </ul>
     
                 <p>Do you wanna check the <b style="font-style: bold">shame</b> of GitHub? This is your page. Use it carefully.</p>
@@ -190,7 +177,7 @@
             </div>
             <div class="col-block stats__col">
                 <div class="stats__count">-102</div>
-                <h5>Happy Clients</h5> 
+                <h5>Happy employees</h5> 
             </div>
 
         </div> <!-- end about-stats -->
@@ -329,100 +316,23 @@
                 <h3 class="h3" style="color: #FFFFFF; text-align: left" data-aos="fade-up" id="usernameSelected">Username</h3>
             </div>
 
-            <!-- <div class="col-block commit-item" data-aos="fade-up">
-                <div class="commit-text">
-                    <h3 class="h2" style="color: #FFFFFF">1. Commit1</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-block commit-item" data-aos="fade-up">
-                <div class="commit-text">
-                    <h3 class="h2" style="color: #FFFFFF">2. Commit2</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-block commit-item" data-aos="fade-up">
-                <div class="commit-text">
-                    <h3 class="h2" style="color: #FFFFFF">3. Commit3</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-block commit-item" data-aos="fade-up">
-                <div class="commit-text">
-                    <h3 class="h2" style="color: #FFFFFF">4. Commit4</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-block commit-item" data-aos="fade-up">
-                <div class="commit-text">
-                    <h3 class="h2" style="color: #FFFFFF">5. Commit5</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
-                </div>
-            </div>
-    
-            <div class="col-block commit-item" data-aos="fade-up">
-                <div class="commit-text">
-                    <h3 class="h2" style="color: #FFFFFF">6. Commit6</h3>
-                    <p>Nemo cupiditate ab quibusdam quaerat impedit magni. Earum suscipit ipsum laudantium. 
-                    Quo delectus est. Maiores voluptas ab sit natus veritatis ut. Debitis nulla cumque veritatis.
-                    Sunt suscipit voluptas ipsa in tempora esse soluta sint.
-                    </p>
-                </div>
-            </div> -->
-
         </div> <!-- end commits-list -->
 
     </section> <!-- end s-commits -->
 
-    <!-- clients
+    <!-- employees
     ================================================== -->
-    <section id="clients" class="s-clients">
+    <section id="employees" class="s-employees">
 
         <div class="row section-header" data-aos="fade-up">
             <div class="col-full">
-                <h3 class="subhead">Our Clients</h3>
-                <h1 class="display-2">Glint has been honored to
-                partner up with these clients</h1>
+                <h3 class="subhead">Our employees</h3>
+                <h1 class="display-2">Shame of GitHub has been honored to
+                work with these employees</h1>
             </div>
         </div> <!-- end section-header -->
 
-        <div class="row clients-outer" data-aos="fade-up">
-            <div class="col-full">
-                <div class="clients">
-                    
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/apple.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/atom.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/blackberry.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/dropbox.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/envato.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/firefox.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/joomla.png" /></a>
-                    <a href="#0" title="" class="clients__slide"><img src="images/clients/magento.png" /></a>
-                     
-                </div> <!-- end clients -->
-            </div> <!-- end col-full -->
-        </div> <!-- end clients-outer -->
-
-        <div class="row clients-testimonials" data-aos="fade-up">
+        <div class="row employees-testimonials" data-aos="fade-up">
             <div class="col-full">
                 <div class="testimonials">
 
@@ -456,9 +366,9 @@
                 </div><!-- end testimonials -->
                 
             </div> <!-- end col-full -->
-        </div> <!-- end client-testimonials -->
+        </div> <!-- end employees-testimonials -->
 
-    </section> <!-- end s-clients -->
+    </section> <!-- end s-employees -->
     
     <!-- footer
     ================================================== -->
@@ -477,14 +387,6 @@
 
                 <h4>Get Notified</h4>
                 <p>Quia quo qui sed odit. Quaerat voluptas autem necessitatibus vitae aut non alias sed quia. Ut itaque enim optio ut excepturi deserunt iusto porro.</p>
-
-                <div class="subscribe-form">
-                    <form id="mc-form" class="group" novalidate="true">
-                        <input type="email" value="" name="EMAIL" class="email" id="mc-email" placeholder="Email Address" required="">
-                        <input type="submit" name="subscribe" value="Subscribe">
-                        <label for="mc-email" class="subscribe-message"></label>
-                    </form>
-                </div>
 
             </div>
 

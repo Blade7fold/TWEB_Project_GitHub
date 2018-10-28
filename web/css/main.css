@@ -43,7 +43,7 @@
  *      ## commits list
  *  # twinder
  *      ## bricks/masonry
- *  # clients
+ *  # employees
  *      ## slider
  *      ## testimonials
  *  # contact
@@ -1355,7 +1355,7 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 }
 
 @media only screen and (max-width: 800px) {
-    .s-clients {
+    .s-employees {
         padding-bottom: 17.4rem;
     }
     .section-header.has-bottom-sep::before {
@@ -2760,10 +2760,10 @@ html.no-csstransitions .home-content__main {
 
 
 /* ===================================================================
- * # clients
+ * # employees
  *
  * ------------------------------------------------------------------- */
-.s-clients {
+.s-employees {
     padding-top: 16.2rem;
     padding-bottom: 16.8rem;
     background-color: #e6e6e6;
@@ -2775,14 +2775,14 @@ html.no-csstransitions .home-content__main {
 /* ------------------------------------------------------------------- 
  * ## slider
  * ------------------------------------------------------------------- */
-.clients-outer {
+.employees-outer {
     margin-top: 3.6rem;
     padding-bottom: 9rem;
     text-align: center;
     position: relative;
 }
 
-.clients__slide {
+.employees__slide {
     display: block;
     opacity: .55;
     padding: 1.5rem 2.8rem;
@@ -2790,7 +2790,7 @@ html.no-csstransitions .home-content__main {
     transition: opacity 0.5s ease-in-out;
 }
 
-.clients__slide:hover, .clients__slide:focus {
+.employees__slide:hover, .employees__slide:focus {
     opacity: 1;
 }
 
@@ -2798,14 +2798,14 @@ html.no-csstransitions .home-content__main {
 /* ------------------------------------------------------------------- 
  * ## testimonials
  * ------------------------------------------------------------------- */
-.clients-testimonials {
+.employees-testimonials {
     margin-top: 4.2rem;
     padding-top: 7.2rem;
     text-align: center;
     position: relative;
 }
 
-.clients-testimonials::before {
+.employees-testimonials::before {
     content: "";
     display: block;
     height: 1px;
@@ -2820,11 +2820,11 @@ html.no-csstransitions .home-content__main {
     transform: translateX(-50%);
 }
 
-.clients-testimonials .testimonials {
+.employees-testimonials .testimonials {
     margin: 0 10%;
 }
 
-.clients-testimonials .testimonials p {
+.employees-testimonials .testimonials p {
     font-family: "lora-regular", serif;
     font-size: 3rem;
     line-height: 1.8;
@@ -2832,33 +2832,33 @@ html.no-csstransitions .home-content__main {
     margin-bottom: 6rem;
 }
 
-.clients-testimonials .testimonials__slide {
+.employees-testimonials .testimonials__slide {
     padding: 0 0 3rem 0;
 }
 
-.clients-testimonials .testimonials__avatar {
+.employees-testimonials .testimonials__avatar {
     height: 8.4rem;
     width: 8.4rem;
     border-radius: 50%;
     margin: 0 auto 1.2rem auto;
 }
 
-.clients-testimonials .testimonials__name, 
-.clients-testimonials .testimonials__pos {
+.employees-testimonials .testimonials__name, 
+.employees-testimonials .testimonials__pos {
     display: block;
 }
 
-.clients-testimonials .testimonials__name {
+.employees-testimonials .testimonials__name {
     font-family: "montserrat-semibold", sans-serif;
     color: #000000;
 }
 
-.clients-testimonials .testimonials__pos {
+.employees-testimonials .testimonials__pos {
     font-family: "montserrat-light", sans-serif;
     font-size: 1.4rem;
 }
 
-.clients-testimonials .testimonials .slick-arrow {
+.employees-testimonials .testimonials .slick-arrow {
     position: absolute;
     top: 7.2rem;
     width: 66px;
@@ -2879,82 +2879,82 @@ html.no-csstransitions .home-content__main {
     z-index: 2;
 }
 
-.clients-testimonials .testimonials .slick-prev {
+.employees-testimonials .testimonials .slick-prev {
     left: -130px;
     background-image: url("../images/left-arrow.png");
 }
 
-.clients-testimonials .testimonials .slick-next {
+.employees-testimonials .testimonials .slick-next {
     right: -130px;
     background-image: url("../images/right-arrow.png");
 }
 
-.clients-testimonials .testimonials .slick-dots {
+.employees-testimonials .testimonials .slick-dots {
     margin-top: -0.6px;
 }
 
 
 /* ------------------------------------------------------------------- 
  * responsive:
- * clients
+ * employees
  * ------------------------------------------------------------------- */
 @media only screen and (max-width: 1200px) {
-    .clients-testimonials .testimonials {
+    .employees-testimonials .testimonials {
         margin: 0 12%;
     }
-    .clients-testimonials .testimonials p {
+    .employees-testimonials .testimonials p {
         font-size: 2.6rem;
     }
-    .clients-testimonials .testimonials .slick-prev {
+    .employees-testimonials .testimonials .slick-prev {
         left: -100px;
     }
-    .clients-testimonials .testimonials .slick-next {
+    .employees-testimonials .testimonials .slick-next {
         right: -100px;
     }
 }
 
 @media only screen and (max-width: 1000px) {
-    .clients-testimonials .testimonials p {
+    .employees-testimonials .testimonials p {
         font-size: 2.2rem;
     }
 }
 
 @media only screen and (max-width: 800px) {
-    .clients-testimonials::before {
+    .employees-testimonials::before {
         width: 400px;
     }
-    .clients-testimonials .testimonials {
+    .employees-testimonials .testimonials {
         margin: 0 2rem;
     }
-    .clients-testimonials .testimonials .slick-arrow {
+    .employees-testimonials .testimonials .slick-arrow {
         top: auto;
         bottom: 3rem;
     }
-    .clients-testimonials .testimonials .slick-prev {
+    .employees-testimonials .testimonials .slick-prev {
         left: 0;
     }
-    .clients-testimonials .testimonials .slick-next {
+    .employees-testimonials .testimonials .slick-next {
         right: 0;
     }
 }
 
 @media only screen and (max-width: 600px) {
-    .s-clients {
+    .s-employees {
         padding-top: 12rem;
     }
-    .clients-testimonials::before {
+    .employees-testimonials::before {
         width: 250px;
     }
-    .clients-testimonials .testimonials {
+    .employees-testimonials .testimonials {
         margin: 0;
     }
-    .clients-testimonials .testimonials p {
+    .employees-testimonials .testimonials p {
         font-size: 2rem;
     }
 }
 
 @media only screen and (max-width: 400px) {
-    .clients-testimonials .testimonials p {
+    .employees-testimonials .testimonials p {
         font-size: 1.9rem;
     }
 }
