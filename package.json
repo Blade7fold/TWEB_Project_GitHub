@@ -18,8 +18,7 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "test": "mocha",
-    "start": "micro"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
