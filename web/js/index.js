@@ -1,6 +1,11 @@
-// $WIN = $(window);
 let entryPoint = 'http://localhost:8080'
 
+/**
+ * Function used to asked to the server the informations needed to show
+ * @param {*} path Path to the information
+ * @param {*} search_opt The options we need to search users
+ * @param {*} opts Options for searching
+ */
 function request(path, search_opt, opts = {}) {
   let url = `${entryPoint}/${path}?`;
   let list_opt = Object.keys(search_opt);
@@ -24,6 +29,9 @@ function request(path, search_opt, opts = {}) {
     })});
 }
 
+/**
+ * Elements used to have the same number in the inputs for the seed
+ */
 $('#seed1').keyup(function (){
   $('#seed2').val($(this).val());
   $('#seed3').val($(this).val());
