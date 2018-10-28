@@ -136,7 +136,7 @@ class Github {
    * @param {username of the user we want the repositories} user 
    */
   repositoriesOf(user) {
-    return this.request('/search/repositories', {'q':util.dictToSearchOption({'user':user, 'fork': 'true'})}).catch(err => {console.log("fuck6" + err);return undefined})
+    return this.request('/search/repositories', {'q':util.dictToSearchOption({'user':user, 'fork': 'true'})}).catch(err => {console.log("fuck6" + err.status);return undefined})
   }
 
   /**
@@ -179,9 +179,17 @@ class Github {
    */
   linesOf(user) {
     let nb_lines = 0
+    let forbidden = false
     return this.repositoriesOf(user)
+      .catch(err => {
+        console.log("catch" + err);
+        if(err.status === 403) {
+          forbidden = true
+        }
+        return undefined
+      })
       .then(repos_data => {
-        if(repos_data === undefined) {
+        if(repos_data === undefined || forbidden) {
           console.log("repos pas trouvé")
           return 0;
         }
@@ -190,13 +198,17 @@ class Github {
         let repos = repos_data['items']
         let names_repos = []
         if(repos != []) {
-          for (let i = 0; i < nb_repos; i++) {
+          for (let i = 0; i < nb_repos && !forbidden; i++) {
             let page = Math.ceil((i  + 1) / per_page)
             let index_on_page = i - (page - 1) * per_page
             if(repos[index_on_page] !== undefined) {
                names_repos.push(this.request(`/repos/${repos[index_on_page]['full_name']}/stats/contributors`, {'page':page})
                 .catch(err => {
                   console.log("fuck10" + err);
+                  if(err.status === 403) {
+                    console.log("STOP FORBIDDEN")
+                    forbidden = true
+                  }
                   return undefined
                 })
                 .then(contributions_data => {
@@ -208,8 +220,6 @@ class Github {
                         }
                       }
                     }
-                  } else {
-                    return undefined
                   }
                   return nb_lines
                 })
