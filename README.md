@@ -6,7 +6,11 @@ and number of commits. We also show all their commits to check if they have good
 
 ## How to run it locally
 
-To run it locally, you have to fork the project, open a command line (bash or others) of your project and write this:
+To run it locally, you have to fork the project and first, install all the dependencies with :
+```
+npm install
+``` 
+Later, open a command line (bash or others) of your project and write this:
 ```
 node httpServer.js
 ```
