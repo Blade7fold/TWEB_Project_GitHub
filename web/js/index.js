@@ -226,7 +226,7 @@ function drawVerticalGraph(data, idHTML) {
    * utilitary method to calculate de height of a given bar given his index
    * @param {index} i 
    */
-  function getHeight(d, i) {
+  function getHeight(i) {
     let height = chartHeight - spaceForLabels
     for (let j = 0; j < data.series.length; j++) {
       if ((i - j) % data.series.length == 0) {
@@ -405,7 +405,7 @@ function drawHorizontalGraph(data, idHTML) {
     }
   };
   let functionHeight = barHeight - 1;
-  drawRectangles(bar, data, color, functionX, functionY, functionWidth, functionHeight);barHeight - 1
+  drawRectangles(bar, data, color, functionX, functionY, functionWidth, functionHeight);
 
   // Add text label in bar
   bar.append("text")
@@ -438,7 +438,7 @@ function drawHorizontalGraph(data, idHTML) {
 }
 
 function createChart(idNodeHTML, width, height) {
-  d3.select(ididNodeHTMLHTML).selectAll("svg").remove();
+  d3.select(idNodeHTML).selectAll("svg").remove();
   return d3.select(idNodeHTML).append("svg")
     .attr("width", width)
     .attr("height", height);
