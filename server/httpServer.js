@@ -17,9 +17,12 @@ console.log('Connected');
  */
 app.get('/commit', function(req, res) {
     let q = url.parse(req.url, true)
+    console.log("URL HTTP: " + q)
     git.commitsOf(q.query['user'])
     .then(data => {
         try {
+            console.log("USER HTTP: " + q.query['user'])
+            console.log("DATA: " + data)
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.json(data)
         } catch(err) {

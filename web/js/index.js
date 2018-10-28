@@ -2,8 +2,12 @@
 let entryPoint = 'http://localhost:8080'
 
 function request(path, search_opt, opts = {}) {
-  let url = `${entryPoint}/${path}?seed=${search_opt.seed}`;
-
+  let url = `${entryPoint}/${path}?`;
+  let list_opt = Object.keys(search_opt)
+  for(let i = 0; i < list_opt.length; ++i) {
+    url += `${list_opt[i]}=${search_opt[list_opt[i]]}`;
+  }
+  console.log("SENT URL: " + url)
   let options = {
     ...opts, 
     headers: {
@@ -52,11 +56,17 @@ function changeFollowersInfo() {
 }
 
 function selectUsers(infoUsers) {
-  console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed);
+  console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed + " ID User: " + infoUsers[0]['id']);
   let i = 0;
   let find = true;
-  while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= 10) {
-    console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' ' + i + ' Seed in: ' + newSeed);
+  while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= 10 || (newSeed + 1) !== infoUsers[i]['id']) {
+    if((newSeed + 1) !== infoUsers[i]['id']) {
+      let diff = infoUsers[i]['id'] - newSeed - 1
+      console.log("Difference: " + diff)
+      newSeed += diff;
+      continue;
+    }
+    console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' i: ' + i + ' Seed in: ' + newSeed + " ID User: " + infoUsers[i]['id']);
     ++i;
     ++newSeed;
     if(i === infoUsers.length){
@@ -75,6 +85,26 @@ function selectUsers(infoUsers) {
   find = true;
 }
 
+function showTwinderUsers(showUsers, noUser) {
+  console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
+  document.getElementById("usernamePic").innerHTML = showUsers[noUser]['login']
+  if(showUsers[noUser]['avatar_url'] !== null) {
+    console.log("Found avatar");
+    document.getElementById("profilePic1").href = showUsers[noUser]['avatar_url'];
+    document.getElementById("profilePic2").src = showUsers[noUser]['avatar_url'];
+    document.getElementById("profilePic3").href = showUsers[noUser]['avatar_url'];
+    // console.log('Before ' + document.getElementsByClassName("pswp__img").src)
+    // clPhotoswipe(showUsers[noUser]['avatar_url'])
+    // document.getElementsByClassName("pswp__img").src = showUsers[noUser]['avatar_url'];
+    // console.log('After ' + document.getElementsByClassName("pswp__img").src)
+    // document.getElementById("profilePic").innerHTML = showUsers[noUser]['avatar_url']
+  }else {
+    console.log("Couldn't find avatar");
+  }
+  // console.log('After again ' + document.getElementsByClassName("pswp__img").src)
+  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"//Seed 123412 - 1232 - 14545
+}
+
 function nextUser(action) {
   if(action) {
     console.log("Followed :D")
@@ -84,25 +114,9 @@ function nextUser(action) {
 
   ++newSeed;
   getUserFollowers(newSeed).then(newTwinder => {
-    console.log('Next user ' + newTwinder);
+    console.log('Next user ' + newTwinder[0]['login']);
     selectUsers(newTwinder);
   });
-}
-
-function showTwinderUsers(showUsers, noUser) {
-  console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
-  document.getElementById("usernamePic").innerHTML = showUsers[noUser]['login']
-  if(showUsers[noUser]['avatar_url'] !== null) {
-    console.log("Found avatar");
-    document.getElementById("profilePic1").href = showUsers[noUser]['avatar_url'];
-    document.getElementById("profilePic2").src = showUsers[noUser]['avatar_url'];
-    document.getElementById("profilePic3").href = showUsers[noUser]['avatar_url'];
-    document.getElementsByClassName("pswp__img").src = showUsers[noUser]['avatar_url'];
-    // document.getElementById("profilePic").innerHTML = showUsers[noUser]['avatar_url']
-  }else {
-    console.log("Couldn't find avatar");
-  }
-  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"//Seed 123412 - 1232
 }
 
 $('#username1').keyup(function (){
@@ -119,7 +133,7 @@ function getUserCommits(username) {
 function changeCommitsInfo() {
 
   //let username = document.getElementById("commit_username").value
-  console.log('Username:' + document.getElementById("username2").value)
+  console.log('Username: ' + document.getElementById("username2").value)
   document.getElementById("usernameSelected").textContent = document.getElementById("username2").value
   getUserCommits(document.getElementById("username2").value).then(commits => {
     console.log('Got: ' + commits + ' Length: ' + commits.length)

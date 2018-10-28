@@ -220,10 +220,10 @@
                 <div class="masonry">
                     
                     <div class="home-content__buttons">
-                        <a class="smoothscroll btn btn--stroke" title="Not Follow" onclick="nextUser(false)"
+                        <a class="btn btn--stroke" title="Not Follow" onclick="nextUser(false)"
                           style="background-image: url('images/nope.jpg'); height: 15rem;
                           margin-top: 20rem"></a>
-                        <a class="smoothscroll btn btn--stroke" title="Follow" onclick="nextUser(true)"
+                        <a class="btn btn--stroke" title="Follow" onclick="nextUser(true)"
                          style="background-image: url('images/follow.jpg'); margin-left: 50rem; height: 15rem"></a>
                     </div>
     
@@ -256,7 +256,7 @@
                     </div> <!-- end masonry__brick -->
                 </div> <!-- end masonry -->
                 
-                <h3 class="h4" style="text-align: center; font: bold; color: crimson">
+                <h3 class="h4" style="text-align: center; font: bold; color: crimson" data-aos="fade-up">
                     Choose your Seed: <input id="seed2" type="number" min="0" max="31000000" value="0"
                                             style="margin-left: 485px">
                     <input type="image" src="images/change.png" alt="submit" width="100" height="100"
@@ -279,17 +279,14 @@
                 <h3 class="subhead">Check who is the best in the big sea of GitHub</h3>
             </div>
         </div> <!-- end section-header -->
-
         
-        <div>
-            <h3 class="h4" style="font: bold; color: crimson">
-                Choose your Seed: <input id="seed3" type="number" min="0" max="31000000" value="0"
-                        style="margin-left: 550px">
-            </h3>
+        <h3 class="h4" style="color: crimson; text-align: center" data-aos="fade-up">
+            Choose your Seed: <input id="seed3" type="number" min="0" max="31000000" value="0"
+                        style="margin-left: 685px">
             <input type="image" src="images/change.png" alt="submit" width="100" height="100"
-                            style="margin-left: 505px" onclick="changeStatsInfo()">
-        </div>
-
+                                onclick="changeStatsInfo()">
+        </h3>
+        
         <div class="row race-list block-1-2 block-tab-full">
 
             <div class="col-block service-item" data-aos="fade-up">

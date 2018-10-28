@@ -39,18 +39,21 @@ class Github {
         Authorization: `token ${this.token}`
       },
     };
+    console.log('URL: ' + url)
     return fetch(url, options)
-      .then(res => res.json()
+      .then(res => {
+        return res.json()
         .then((data) => {
+          console.log("BIIIIIIIIIIIIIITCH " + data);
           if (!res.ok) {
             throw new ResponseError(res, data);
           }
           if(onlyHeaders) {
             return res.headers
           }
-
+          // console.log('Data: ' + data[0]['login'])
           return data;
-        })).catch(err => {throw new ResponseError(err)});
+        })}).catch(err => {throw new ResponseError(err)});
   }
 
   /**
@@ -105,13 +108,18 @@ class Github {
         url_followers = user['followers_url'].replace(this.baseUrl,'')
         followers_promises.push(this.request(url_followers, {"per_page": 1}, true))
         cleaned_user = {'login': user['login'],
-                        'avatar_url': user['avatar_url']
+                        'avatar_url': user['avatar_url'],
+                        'id': user['id']
                       }
         cleaned_infos_users.push(cleaned_user)
       }
       return Promise.all(followers_promises).then(list_followers => {
         for (let i = 0; i < list_followers.length; i++) {
-          cleaned_infos_users[i]['nb_followers'] = parse(list_followers[i].get('Link'))['last']['page']
+          if(parse(list_followers[i].get('Link')) !== null) {
+            cleaned_infos_users[i]['nb_followers'] = parse(list_followers[i].get('Link'))['last']['page']
+          }else {
+            cleaned_infos_users[i]['nb_followers'] = 0;
+          }
         }
         return cleaned_infos_users
       })
