@@ -1,9 +1,7 @@
 require('dotenv').config();
-var http = require('http');
 var express = require('express');
 var app = express();
 var url = require('url');
-var querystring = require('querystring');
 var github = require('./githubServer')
 
 

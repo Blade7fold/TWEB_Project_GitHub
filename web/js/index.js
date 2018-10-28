@@ -3,11 +3,10 @@ let entryPoint = 'http://localhost:8080'
 
 function request(path, search_opt, opts = {}) {
   let url = `${entryPoint}/${path}?`;
-  let list_opt = Object.keys(search_opt)
+  let list_opt = Object.keys(search_opt);
   for(let i = 0; i < list_opt.length; ++i) {
     url += `${list_opt[i]}=${search_opt[list_opt[i]]}`;
   }
-  console.log("SENT URL: " + url)
   let options = {
     ...opts, 
     headers: {
@@ -39,16 +38,14 @@ $('#seed3').keyup(function (){
 });
 
 function getUserFollowers(seed) {
-  console.log("SEARCH: " + seed)
-  return request('follower', {'seed': seed})
+  document.getElementById("followStatus").textContent = "Searching..."
+  return request('follower', {'seed': seed});
 }
 
 let newSeed = 0;
-console.log("Before " + newSeed);
 function changeFollowersInfo() {
   let infosTwinder;
   getUserFollowers(document.getElementById("seed2").value).then(twinder => {
-    console.log('First ' + twinder);
     infosTwinder = twinder;
     newSeed = parseInt(document.getElementById("seed2").value);
     selectUsers(infosTwinder);
@@ -56,25 +53,25 @@ function changeFollowersInfo() {
 }
 
 function selectUsers(infoUsers) {
-  console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed + " ID User: " + infoUsers[0]['id']);
+  // console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed + " ID User: " + infoUsers[0]['id']);
   let i = 0;
   let find = true;
   while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= 10 || (newSeed + 1) !== infoUsers[i]['id']) {
     if((newSeed + 1) !== infoUsers[i]['id']) {
-      let diff = infoUsers[i]['id'] - newSeed - 1
-      console.log("Difference: " + diff)
+      let diff = infoUsers[i]['id'] - newSeed - 1;
+      // console.log("Difference: " + diff)
       newSeed += diff;
       continue;
     }
-    console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' i: ' + i + ' Seed in: ' + newSeed + " ID User: " + infoUsers[i]['id']);
+    // console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' i: ' + i + ' Seed in: ' + newSeed + " ID User: " + infoUsers[i]['id']);
     ++i;
     ++newSeed;
-    if(i === infoUsers.length){
+    if(i === infoUsers.length) {
       find = false;
-      console.log('Again')
-      console.log('New seed: ' + newSeed + ' Find: ' + find);
+      // console.log('Again')
+      // console.log('New seed: ' + newSeed + ' Find: ' + find);
       getUserFollowers(newSeed).then(newTwinder => {
-        console.log('New again ' + newTwinder);
+        // console.log('New again ' + newTwinder);
         selectUsers(newTwinder);
       });
     }
@@ -86,23 +83,17 @@ function selectUsers(infoUsers) {
 }
 
 function showTwinderUsers(showUsers, noUser) {
-  console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
-  document.getElementById("usernamePic").innerHTML = showUsers[noUser]['login']
+  // console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
+  document.getElementById("usernamePic").innerHTML = showUsers[noUser]['login'];
+  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"
   if(showUsers[noUser]['avatar_url'] !== null) {
-    console.log("Found avatar");
     document.getElementById("profilePic1").href = showUsers[noUser]['avatar_url'];
     document.getElementById("profilePic2").src = showUsers[noUser]['avatar_url'];
     document.getElementById("profilePic3").href = showUsers[noUser]['avatar_url'];
-    // console.log('Before ' + document.getElementsByClassName("pswp__img").src)
-    // clPhotoswipe(showUsers[noUser]['avatar_url'])
-    // document.getElementsByClassName("pswp__img").src = showUsers[noUser]['avatar_url'];
-    // console.log('After ' + document.getElementsByClassName("pswp__img").src)
-    // document.getElementById("profilePic").innerHTML = showUsers[noUser]['avatar_url']
+    document.getElementById("followStatus").textContent = "Found :D"
   }else {
     console.log("Couldn't find avatar");
   }
-  // console.log('After again ' + document.getElementsByClassName("pswp__img").src)
-  document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"//Seed 123412 - 1232 - 14545
 }
 
 function nextUser(action) {
@@ -114,7 +105,6 @@ function nextUser(action) {
 
   ++newSeed;
   getUserFollowers(newSeed).then(newTwinder => {
-    console.log('Next user ' + newTwinder[0]['login']);
     selectUsers(newTwinder);
   });
 }
@@ -127,102 +117,89 @@ $('#username2').keyup(function (){
 });
 
 function getUserCommits(username) {
-  return request('commit', {'user': username})
+  return request('commit', {'user': username});
 }
 
 function changeCommitsInfo() {
-
-  //let username = document.getElementById("commit_username").value
-  console.log('Username: ' + document.getElementById("username2").value)
-  document.getElementById("usernameSelected").textContent = document.getElementById("username2").value
+  document.getElementById("usernameSelected").textContent = document.getElementById("username2").value;
   getUserCommits(document.getElementById("username2").value).then(commits => {
-    console.log('Got: ' + commits + ' Length: ' + commits.length)
     let insert = document.getElementById("insertCommits");
     for (let i = 0, j = 1; i < Object.keys(commits).length; ++i, ++j) {
-      // console.log('Shit -> ' + document.getElementById("commitsPlace" + j));
       // Creating the entry point with the fade event
       if(document.getElementById("commitsPlace" + j) === null) {
-        console.log('Creating...')
+        // console.log('Creating...')
         let positionTag = document.createElement("div")
-        positionTag.setAttribute("class", "col-block commit-item")
-        positionTag.setAttribute("data-aos", "fade-up")
-        positionTag.setAttribute("id", "commitsPlace"+ j)
+        positionTag.setAttribute("class", "col-block commit-item");
+        positionTag.setAttribute("data-aos", "fade-up");
+        positionTag.setAttribute("id", "commitsPlace"+ j);
 
         // Creating the title and commit text part
-        let tag = document.createElement("div")
-        tag.setAttribute("class", "commit-text")
-        positionTag.appendChild(tag)
+        let tag = document.createElement("div");
+        tag.setAttribute("class", "commit-text");
+        positionTag.appendChild(tag);
         
         // Creating the title part and inserting it first in the text part
-        let commitTitle = document.createElement("h3")
-        commitTitle.setAttribute("class", "h5")
-        commitTitle.setAttribute("id", "title" + j)
-        commitTitle.setAttribute("style", "color: #FFFFFF")
-        tag.appendChild(commitTitle)
+        let commitTitle = document.createElement("h3");
+        commitTitle.setAttribute("class", "h5");
+        commitTitle.setAttribute("id", "title" + j);
+        commitTitle.setAttribute("style", "color: #FFFFFF");
+        tag.appendChild(commitTitle);
 
         // Inserting the correct title
-        let title = document.createTextNode("Commit n°" + j)
-        commitTitle.appendChild(title)
+        let title = document.createTextNode("Commit n°" + j);
+        commitTitle.appendChild(title);
 
         // Creating the commit part and inserting it after in the text part
-        let commitText = document.createElement("p")
-        commitText.setAttribute("id", "text" + j)
-        commitText.setAttribute("style", "font-weight: bold")
-        tag.appendChild(commitText)
+        let commitText = document.createElement("p");
+        commitText.setAttribute("id", "text" + j);
+        commitText.setAttribute("style", "font-weight: bold");
+        tag.appendChild(commitText);
 
         // Inserting the correct commit
         let textCommit = document.createTextNode(commits[i]);
-        commitText.appendChild(textCommit)
+        commitText.appendChild(textCommit);
 
-        insert.appendChild(positionTag)
+        insert.appendChild(positionTag);
       }else {
         do {
-          console.log('Deleting...')
           insert.removeChild(document.getElementById("commitsPlace" + j));
-          j++
+          ++j;
         }while(document.getElementById("commitsPlace" + j) !== null);
         j = 0;
         i = -1;
       }
-      // let textNode = document.getElementById("commit_text" + i)
-      // if (textNode == undefined) {
-      //   textNode = document.createElement('p');
-      //   textNode.setAttribute("id", "commit_text" + i);
-      //   document.getElementById("patata").appendChild(textNode); 
-      // }
-      // textNode.innerHTML = commits[i]
     }
   })
 }
 
 function getUserStats(seed) {
-  return request('stat', {'seed': seed})
+  return request('stat', {'seed': seed});
 }
 
 
 
 function drawVerticalGraph(data, idHTML) {
-  console.log(data)
+  // console.log(data)
   function getHeight(d, i) {
     let height = chartHeight - spaceForLabels
-        for (let j = 0; j < data.series.length; j++) {
-          if ((i - j) % data.series.length == 0) {
-            height -= (data.series[j].values[Math.floor(i/data.series.length)] / allMaxes[j]) * (chartHeight) / 3
-            return  height;
-          } else {
-            height -= (data.series[j].values[Math.floor(i/data.series.length)] / allMaxes[j]) * (chartHeight) / 3;
-          }
-        }
+    for (let j = 0; j < data.series.length; j++) {
+      if ((i - j) % data.series.length == 0) {
+        height -= (data.series[j].values[Math.floor(i/data.series.length)] / allMaxes[j]) * (chartHeight) / 3;
+        return  height;
+      } else {
+        height -= (data.series[j].values[Math.floor(i/data.series.length)] / allMaxes[j]) * (chartHeight) / 3;
+      }
+    }
   }
 
-  let levelClassification = ["goku", "god", "spartian", "knight", "goblin", "slime"]
-  let level = []
+  let levelClassification = ["goku", "god", "spartian", "knight", "goblin", "slime"];
+  let level = [];
 
-  let allMaxes = []
+  let allMaxes = [];
   for (let k = 0; k < data.series.length; k++) {
-    allMaxes.push(d3.max(data.series[k].values))
+    allMaxes.push(d3.max(data.series[k].values));
   }
-  let maxOfMaxes = d3.max(allMaxes)
+  let maxOfMaxes = d3.max(allMaxes);
 
   var zippedData = [];
   for (var i=0; i<data.series[0].values.length; i++) {
@@ -242,7 +219,7 @@ function drawVerticalGraph(data, idHTML) {
   var chartWidth = barWidth * zippedData.length + gapBetweenGroups * data.series[0].values.length;
 
   for (let i = 0; i < data.labels.length; i++) {
-    let index = (i + 1) * data.series.length - 1
+    let index = (i + 1) * data.series.length - 1;
     level.push(levelClassification[Math.floor((getHeight(1, index) / chartHeight) * levelClassification.length)])
   }
 
@@ -269,7 +246,7 @@ function drawVerticalGraph(data, idHTML) {
       .data(zippedData)
       .enter().append("g")
       .attr("transform", function(d, i) {
-        let x = gapBetweenGroups * (0.5 + Math.floor(i/data.series.length)) - Math.floor(i/(data.series.length)) * barWidth
+        let x = gapBetweenGroups * (0.5 + Math.floor(i/data.series.length)) - Math.floor(i/(data.series.length)) * barWidth;
         return "translate(" + x + "," + spaceForLabels + ")";
       });
 
@@ -302,12 +279,12 @@ function drawVerticalGraph(data, idHTML) {
           return ""});
 
   chart.append("g")
-        .attr("class", "x axis")
-        .attr("transform", function(d, i) {
-          let y = chartHeight
-          return "translate(" + gapBetweenGroups/2 + ", " + y + ")"
-        })
-        .call(xAxis);
+      .attr("class", "x axis")
+      .attr("transform", function(d, i) {
+        let y = chartHeight
+        return "translate(" + gapBetweenGroups/2 + ", " + y + ")"
+      })
+      .call(xAxis);
 
   // Draw legend
   var legendRectSize = 18,
@@ -345,19 +322,21 @@ function drawVerticalGraph(data, idHTML) {
   classification.append('text')
       .attr('class', 'classification')
       .attr('x', function(d, i) {
-        return gapBetweenGroups * (0.5 + i) - i * barWidth + legendRectSize + 5})
+        return gapBetweenGroups * (0.5 + i) - i * barWidth + legendRectSize + 5;
+      })
       .attr('y', function(d, i) {
-        return getHeight(d, (i + 1) * data.series.length - 1) + 2 * legendRectSize})
+        return getHeight(d, (i + 1) * data.series.length - 1) + 2 * legendRectSize;
+      })
       .text(function (d) { return d; });
 }
 
 function drawHorizontalGraph(data, idHTML) {
 
-  let allMaxes = []
+  let allMaxes = [];
   for (let k = 0; k < data.series.length; k++) {
-    allMaxes.push(d3.max(data.series[k].values))
+    allMaxes.push(d3.max(data.series[k].values));
   }
-  let maxOfMaxes = d3.max(allMaxes)
+  let maxOfMaxes = d3.max(allMaxes);
 
   var zippedData = [];
   for (var i=0; i<data.labels.length; i++) {
@@ -405,7 +384,9 @@ function drawHorizontalGraph(data, idHTML) {
 
   // Create rectangles of the correct width
   bar.append("rect")
-      .attr("fill", function(d,i) { return color(i % data.series.length); })
+      .attr("fill", function(d,i) {
+        return color(i % data.series.length);
+      })
       .attr("class", "bar")
       .attr("width", function(d,i) {
         for (let j = 0; j < data.series.length; j++) {
@@ -422,7 +403,9 @@ function drawHorizontalGraph(data, idHTML) {
       .attr("y", barHeight / 2)
       .attr("fill", "red")
       .attr("dy", ".35em")
-      .text(function(d) { return d; });
+      .text(function(d) {
+        return d;
+      });
 
   // Draw labels
   bar.append("text")
@@ -431,10 +414,12 @@ function drawHorizontalGraph(data, idHTML) {
       .attr("y", groupHeight / 2 - barHeight * 2)
       .attr("dy", ".35em")
       .text(function(d,i) {
-        if (i % data.series.length === 0)
+        if (i % data.series.length === 0) {
           return data.labels[Math.floor(i/data.series.length)];
-        else
-          return ""});
+        }else {
+          return ""
+        }
+      });
 
   chart.append("g")
         .attr("class", "y axis")
@@ -504,7 +489,7 @@ function changeStatsInfo() {
       labels: label,
       series: serie
     }
-    drawHorizontalGraph(data, "#service1")
-    drawVerticalGraph(data, "#service2")
-  })
+    drawHorizontalGraph(data, "#service1");
+    drawVerticalGraph(data, "#service2");
+  });
 }

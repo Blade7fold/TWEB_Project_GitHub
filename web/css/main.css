@@ -2961,280 +2961,6 @@ html.no-csstransitions .home-content__main {
 
 
 
-/* ===================================================================
- * # contact 
- *
- * ------------------------------------------------------------------- */
-.s-contact {
-    background-color: #151515;
-    background-image: url("../images/contact-bg.jpg");
-    background-repeat: no-repeat;
-    background-position: center, center;
-    padding-top: 15rem;
-    padding-bottom: 12rem;
-    color: rgba(255, 255, 255, 0.5);
-    position: relative;
-}
-
-.s-contact .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: .8;
-    background-color: #151515;
-}
-
-.s-contact .form-field {
-    position: relative;
-}
-
-.s-contact .form-field:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.s-contact .form-field label {
-    font-family: "montserrat-light", sans-serif;
-    font-size: 1rem;
-    line-height: 2.4rem;
-    position: absolute;
-    bottom: -0.3rem;
-    right: .6rem;
-    text-transform: uppercase;
-    letter-spacing: .1rem;
-    padding: 0 2rem;
-    margin: 0;
-    color: #FFFFFF;
-    background: #39b54a;
-}
-
-.s-contact .form-field label::after {
-    content: "";
-    position: absolute;
-    left: -5px;
-    top: 50%;
-    margin-top: -6px;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-right: 5px solid #39b54a;
-}
-
-.contact__line {
-    display: block;
-    width: 2px;
-    height: 20.4rem;
-    background-color: #39b54a;
-    position: absolute;
-    left: 50%;
-    top: -10.2rem;
-    margin-left: -1px;
-}
-
-.contact-content {
-    max-width: 1000px;
-    background-color: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 0.4);
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-    font-family: "montserrat-light", sans-serif;
-    font-size: 1.5rem;
-    line-height: 2;
-    position: relative;
-}
-
-.contact-content h3 {
-    margin-top: 0;
-    margin-bottom: 6.6rem;
-    color: #FFFFFF;
-}
-
-.contact-content h5 {
-    margin-top: 0;
-    color: #39b54a;
-}
-
-.contact-content input[type="email"],
-.contact-content input[type="number"],
-.contact-content input[type="search"],
-.contact-content input[type="text"],
-.contact-content input[type="tel"],
-.contact-content input[type="url"],
-.contact-content input[type="password"],
-.contact-content textarea,
-.contact-content select {
-    color: rgba(255, 255, 255, 0.6);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    margin-bottom: .9rem;
-}
-
-.contact-content input[type="email"]:focus,
-.contact-content input[type="number"]:focus,
-.contact-content input[type="search"]:focus,
-.contact-content input[type="text"]:focus,
-.contact-content input[type="tel"]:focus,
-.contact-content input[type="url"]:focus,
-.contact-content input[type="password"]:focus,
-.contact-content textarea:focus,
-.contact-content select:focus {
-    color: #FFFFFF;
-    border-bottom: 1px solid #39b54a;
-}
-
-.contact-content button,
-.contact-content .btn {
-    margin-top: 3.6rem;
-}
-.contact-content input::-webkit-input-placeholder,
-.contact-content select::-webkit-input-placeholder,
-.contact-content textarea::-webkit-input-placeholder {
-    color: #4f4f4f;
-}
-
-.contact-content input:-moz-placeholder,
-.contact-content select:-moz-placeholder,
-.contact-content textarea:-moz-placeholder {
-    color: #4f4f4f;    /* Firefox 18- */
-}
-
-.contact-content input::-moz-placeholder,
-.contact-content select::-moz-placeholder,
-.contact-content textarea::-moz-placeholder {
-    color: #4f4f4f;    /* Firefox 19+ */
-}
-
-.contact-content input:-ms-input-placeholder,
-.contact-content select:-ms-input-placeholder,
-.contact-content textarea:-ms-input-placeholder {
-    color: #4f4f4f;
-}
-
-.contact-content input.placeholder,
-.contact-content select.placeholder,
-.contact-content textarea.placeholder {
-    color: #4f4f4f !important;
-}
-.contact-primary, .contact-secondary {
-    float: left;
-    padding: 0 5rem;
-}
-
-.contact-primary {
-    width: 65%;
-}
-
-.contact-primary #contactForm {
-    margin-top: -1.5rem;
-}
-
-.contact-secondary {
-    width: 35%;
-}
-
-.contact-secondary::before {
-    content: "";
-    display: block;
-    width: 35%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background-color: #121212;
-}
-
-.contact-secondary .contact-info {
-    position: relative;
-}
-
-.contact-secondary .cinfo {
-    margin-bottom: 4.8rem;
-}
-
-.contact-social {
-    list-style: none;
-    display: inline-block;
-    margin: 0;
-    font-size: 2rem;
-}
-
-.contact-social li {
-    margin-right: 15px;
-    padding-left: 0;
-    display: inline-block;
-}
-
-.contact-social li a {
-    color: white;
-}
-
-.contact-social li a:hover, 
-.contact-social li a:focus {
-    color: #39b54a;
-}
-
-.contact-social li:last-child {
-    margin: 0;
-}
-
-.message-warning, 
-.message-success {
-    display: none;
-    background: #111111;
-    font-size: 1.5rem;
-    line-height: 2;
-    padding: 3rem;
-    margin-bottom: 3.6rem;
-    width: 100%;
-}
-
-.message-warning {
-    color: #ff6163;
-}
-
-.message-success {
-    color: #39b54a;
-}
-
-.message-warning i, .message-success i {
-    margin-right: 10px;
-    font-size: 1.2rem;
-}
-
-
-/* form loader
- * ----------------------------------------------- */
-.submit-loader {
-    display: none;
-    position: relative;
-    left: 0;
-    top: 1.8rem;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.submit-loader .text-loader {
-    display: none;
-    font-family: "montserrat-regular", sans-serif;
-    font-size: 1.3rem;
-    font-weight: bold;
-    line-height: 1.846;
-    color: #FFFFFF;
-    letter-spacing: .2rem;
-    text-transform: uppercase;
-}
-
-.oldie .submit-loader .s-loader {
-    display: none;
-}
-
-.oldie .submit-loader .text-loader {
-    display: block;
-}
-
-
 /* --------------------------------------------------------------- 
  * ## loader animation 
  * --------------------------------------------------------------- */
@@ -3295,70 +3021,6 @@ html.no-csstransitions .home-content__main {
 }
 
 
-/* ------------------------------------------------------------------- 
- * responsive:
- * contact
- * ------------------------------------------------------------------- */
-@media only screen and (max-width: 1200px) {
-    .contact-content {
-        max-width: 900px;
-    }
-}
-
-@media only screen and (max-width: 1000px) {
-    .contact-content {
-        max-width: 700px;
-    }
-    .contact-primary, .contact-secondary {
-        float: none;
-        width: 100%;
-    }
-    .contact-primary #contactForm {
-        margin-top: -1.5rem;
-        margin-bottom: 7.2rem;
-    }
-    .contact-secondary .hide-on-fullwidth {
-        display: none;
-    }
-    .contact-secondary::before {
-        display: none;
-    }
-    .message-warning, .message-success {
-        margin-bottom: 6rem;
-    }
-}
-
-@media only screen and (max-width: 800px) {
-    .contact-content h3 {
-        text-align: center;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .s-contact {
-        padding-top: 12rem;
-        padding-bottom: 0;
-    }
-    .contact__line {
-        height: 14.4rem;
-        top: -7.2rem;
-    }
-    .contact-content {
-        padding-bottom: 12rem;
-        text-align: center;
-    }
-    .contact-primary, .contact-secondary {
-        padding: 0 20px;
-    }
-}
-
-@media only screen and (max-width: 400px) {
-    .contact-primary, .contact-secondary {
-        padding: 0 5px;
-    }
-}
-
-
 
 /* ===================================================================
  * # footer
@@ -3394,6 +3056,7 @@ footer .row {
 }
 
 
+
 /* --------------------------------------------------------------- 
  * ## footer main
  * --------------------------------------------------------------- */
@@ -3411,87 +3074,19 @@ footer .row {
 
 .footer-logo {
     display: block;
-    margin: -.6rem 0 3.6rem 0;
+    margin: -.6rem 0 3.6rem 11rem;
     padding: 0;
     outline: 0;
     border: none;
-    width: 85px;
-    height: 28px;
-    background: url("../images/logo-footer.png") no-repeat center;
-    background-size: 85px 28px;
+    width: 185px;
+    height: 128px;
+    background: url("../images/eisai.gif") no-repeat center;
+    background-size: 185px 128px;
     font: 0/0 a;
     text-shadow: none;
     color: transparent;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-}
-
-.footer-subscribe .subscribe-form {
-    margin: 0;
-    padding: 0;
-    position: relative;
-}
-
-.footer-subscribe #mc-form {
-    width: 100%;
-}
-
-.footer-subscribe #mc-form input[type="email"] {
-    width: 100%;
-    height: 5.4rem;
-    padding: 1.2rem 160px 1.2rem 60px;
-    background: url(../images/email-icon.png) 20px center no-repeat, rgba(0, 0, 0, 0.1);
-    background-size: 24px 16px, auto;
-    border: none;
-    margin-bottom: 1.8rem;
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.footer-subscribe #mc-form input[type="email"]:focus {
-    color: #FFFFFF;
-}
-
-.footer-subscribe #mc-form input[type="email"]::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.2);
-}
-
-.footer-subscribe #mc-form input[type="email"]:-moz-placeholder {
-    color: rgba(255, 255, 255, 0.2);
-    /* Firefox 18- */
-}
-
-.footer-subscribe #mc-form input[type="email"]::-moz-placeholder {
-    color: rgba(255, 255, 255, 0.2);
-    /* Firefox 19+ */
-}
-
-.footer-subscribe #mc-form input[type="email"]:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.2);
-}
-
-.footer-subscribe #mc-form input[type="email"].placeholder {
-    color: rgba(255, 255, 255, 0.2) !important;
-}
-
-.footer-subscribe #mc-form input[type=submit] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #FFFFFF;
-    background: #39b54a;
-    border-color: #39b54a;
-    padding: 0 20px;
-}
-
-.footer-subscribe #mc-form label {
-    color: #FFFFFF;
-    font-family: "montserrat-regular", sans-serif;
-    font-size: 1.3rem;
-    padding: 0 2rem;
-}
-
-.footer-subscribe #mc-form label i {
-    padding-right: 6px;
 }
 
 
@@ -3605,22 +3200,6 @@ footer .row {
     .go-top {
         right: 0;
         bottom: 0;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-    .footer-subscribe #mc-form input[type="email"] {
-        padding: 1.2rem 20px 1.2rem;
-        background: rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-    .footer-subscribe #mc-form input[type=submit] {
-        position: static;
-        width: 100%;
-        margin-bottom: 1.8rem;
-    }
-    .footer-subscribe #mc-form label {
-        text-align: center;
     }
 }
 
