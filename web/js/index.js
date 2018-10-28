@@ -37,12 +37,20 @@ $('#seed3').keyup(function (){
   $('#seed2').val($(this).val());
 });
 
+/**
+ * Function that goes to search user's followers with the provied seed
+ * @param {*} seed Provided by client to search users
+ */
 function getUserFollowers(seed) {
   document.getElementById("followStatus").textContent = "Searching..."
   return request('follower', {'seed': seed});
 }
 
-let newSeed = 0;
+let newSeed = 0; // Variable that helps to search users after checking for their followers
+/**
+ * This function search user's followers to know if we should follow it or not
+ * because they have less than 10 followers
+ */
 function changeFollowersInfo() {
   let infosTwinder;
   getUserFollowers(document.getElementById("seed2").value).then(twinder => {
@@ -52,26 +60,30 @@ function changeFollowersInfo() {
   })
 }
 
+/**
+ * Function to select the user using the seed that the client asks us
+ * Checks also the user has less than 10 followers
+ * @param {*} infoUsers The information of users
+ */
 function selectUsers(infoUsers) {
-  // console.log('(?)NbFollowers ' + infoUsers[0]['nb_followers'] + ' Seed out: ' + newSeed + " ID User: " + infoUsers[0]['id']);
+  const FOLLOWERS_LIMIT = 10;
   let i = 0;
   let find = true;
-  while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= 10 || (newSeed + 1) !== infoUsers[i]['id']) {
+  // We check if it has less than 10 followers
+  // The ID of the user is the provided seed + 1
+  while(i < infoUsers.length && infoUsers[i]['nb_followers'] >= FOLLOWERS_LIMIT || (newSeed + 1) !== infoUsers[i]['id']) {
+    // If the ID is not avaliable, we change the seed to adapt it
     if((newSeed + 1) !== infoUsers[i]['id']) {
       let diff = infoUsers[i]['id'] - newSeed - 1;
-      // console.log("Difference: " + diff)
       newSeed += diff;
       continue;
     }
-    // console.log('(Nope)NbFollowers ' + infoUsers[i]['nb_followers'] + ' i: ' + i + ' Seed in: ' + newSeed + " ID User: " + infoUsers[i]['id']);
     ++i;
     ++newSeed;
+    // If we can't find one between the 5 users received, we search again
     if(i === infoUsers.length) {
       find = false;
-      // console.log('Again')
-      // console.log('New seed: ' + newSeed + ' Find: ' + find);
       getUserFollowers(newSeed).then(newTwinder => {
-        // console.log('New again ' + newTwinder);
         selectUsers(newTwinder);
       });
     }
@@ -82,8 +94,12 @@ function selectUsers(infoUsers) {
   find = true;
 }
 
+/**
+ * This function is called if we find the user using the given seed and shows its profile picture
+ * @param {*} showUsers contains the information of the user (name, picture and nb followers)
+ * @param {*} noUser Which user we are selecting between the 5 searched by githubServer
+ */
 function showTwinderUsers(showUsers, noUser) {
-  // console.log('Found: ' + showUsers[noUser]['login'] + ' follower: ' + showUsers[noUser]['nb_followers'] + ' Seed: ' + newSeed);
   document.getElementById("usernamePic").innerHTML = showUsers[noUser]['login'];
   document.getElementById("nbFollowers").innerHTML = showUsers[noUser]['nb_followers'] + " followers"
   if(showUsers[noUser]['avatar_url'] !== null) {
@@ -92,10 +108,19 @@ function showTwinderUsers(showUsers, noUser) {
     document.getElementById("profilePic3").href = showUsers[noUser]['avatar_url'];
     document.getElementById("followStatus").textContent = "Found :D"
   }else {
-    console.log("Couldn't find avatar");
+    document.getElementById("profilePic1").href = "images/user.jpg";
+    document.getElementById("profilePic2").src = "images/user.jpg";
+    document.getElementById("profilePic3").href = "images/user.jpg";
+    document.getElementById("followStatus").textContent = "Picture not found :("
   }
 }
 
+/**
+ * This function treats if we follow or not a user and goes to search the next one
+ * As the client is not connected to GitHub, it won't really follow them but if it 
+ * would do it, it would be instead of both console.log
+ * @param {*} action To know if we follow or not that user
+ */
 function nextUser(action) {
   if(action) {
     console.log("Followed :D")
@@ -103,12 +128,16 @@ function nextUser(action) {
     console.log("Not Followed D:")
   }
 
+  // After follow, it goes to find next user
   ++newSeed;
   getUserFollowers(newSeed).then(newTwinder => {
     selectUsers(newTwinder);
   });
 }
 
+/**
+ * This element is used to show the same inserted selection in both text inputs to search a user
+ */
 $('#username1').keyup(function (){
   $('#username2').val($(this).val());
 });
@@ -116,18 +145,27 @@ $('#username2').keyup(function (){
   $('#username1').val($(this).val());
 });
 
+/**
+ * Function to search selected user's commits
+ * @param {*} username The user we want to search
+ */
 function getUserCommits(username) {
   return request('commit', {'user': username});
 }
 
+/**
+ * Function to show the commits of a selected user name
+ */
 function changeCommitsInfo() {
+  // Show the username searched
   document.getElementById("usernameSelected").textContent = document.getElementById("username2").value;
+  // Go to search the user we want
   getUserCommits(document.getElementById("username2").value).then(commits => {
     let insert = document.getElementById("insertCommits");
     for (let i = 0, j = 1; i < Object.keys(commits).length; ++i, ++j) {
       // Creating the entry point with the fade event
       if(document.getElementById("commitsPlace" + j) === null) {
-        // console.log('Creating...')
+        // Creation of the place that will contain the commits
         let positionTag = document.createElement("div")
         positionTag.setAttribute("class", "col-block commit-item");
         positionTag.setAttribute("data-aos", "fade-up");
@@ -159,8 +197,10 @@ function changeCommitsInfo() {
         let textCommit = document.createTextNode(commits[i]);
         commitText.appendChild(textCommit);
 
+        // Inserting all in the html file
         insert.appendChild(positionTag);
       }else {
+        // If we found something already, we delete all first and start again
         do {
           insert.removeChild(document.getElementById("commitsPlace" + j));
           ++j;
@@ -172,6 +212,10 @@ function changeCommitsInfo() {
   })
 }
 
+/**
+ * Function that send the seed and go to search user's stats
+ * @param {*} seed Provided to search a user's stats
+ */
 function getUserStats(seed) {
   return request('stat', {'seed': seed});
 }
@@ -179,7 +223,6 @@ function getUserStats(seed) {
 
 
 function drawVerticalGraph(data, idHTML) {
-  // console.log(data)
   function getHeight(d, i) {
     let height = chartHeight - spaceForLabels
     for (let j = 0; j < data.series.length; j++) {
